@@ -13,8 +13,7 @@ namespace zulu.Controllers
   {
     private static List<Report> reports;
 
-
-    public ReportController()
+    static ReportController()
     {
       reports = new List<Report>
       {
@@ -23,6 +22,10 @@ namespace zulu.Controllers
         new Report { Id = 3, Title = "Report Three", Content = "Test report for report three." },
         new Report { Id = 4, Title = "Report Four", Content = "Test report for report four." }
       };
+    }
+
+    public ReportController()
+    {
     }
 
 
