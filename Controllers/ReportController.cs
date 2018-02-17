@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using zulu.Data;
 using zulu.Models;
 
 namespace zulu.Controllers
 {
   [Produces("application/json")]
-  [Route("api/v1")]
+  [Route("api/v1/reports")]
   public class ReportController : Controller
   {
     private static List<Report> reports;
@@ -29,46 +30,50 @@ namespace zulu.Controllers
     }
 
 
-    [HttpGet("reports")]
-    public IActionResult List(int? page, int? pageSize, bool? deleted)
+    [HttpGet("")]
+    public IActionResult List(bool deleted = false)
     {
-      //page = page ?? 1;
-      //pageSize = pageSize ?? 100;
-
-      //return Ok(new Page<Report>(reports.Where(r => r.Deleted == null).Skip(, null, null));
-
-      return Ok(reports.Where(r => r.Deleted == null));
-    }
-
-
-    [HttpGet("reports/published")]
-    public IActionResult ListPublished()
-    {
-      return Ok(reports.Where(r => r.Published != null));
-    }
-
-
-    [HttpPost("report")]
-    public IActionResult Post([FromBody]Report report)
-    {
-      if (report.Id != 0)
+      var query = (IEnumerable<Report>)reports;
+      if(!deleted)
       {
-        return BadRequest("Field 'id' not expected.");
+        query = query.Where(r => r.Deleted == null);
       }
 
+      var results = reports.Select(r => new ReportListViewModel
+      {
+        Id = r.Id,
+        Title = r.Title,
+        Author = r.Author,
+        Published = r.Published.HasValue,
+        Deleted = r.Deleted.HasValue
+      });
+
+      return Ok(results);
+    }
+    
+    
+    [HttpPost("")]
+    public IActionResult Post([FromBody]ReportPostViewModel model)
+    {
       var now = DateTime.Now;
 
-      report.Id = reports.Max(r => r.Id) + 1;  //TODO: don't do this with the database.
-      report.Created = now;
-      report.LastModified = now;
+      var report = new Report
+      {
+        Id = reports.Max(r => r.Id) + 1, //TODO: don't do this with the database.
+        Title = model.Title,
+        Content = model.Content,
+        Author = model.Author,
+        Created = now,
+        LastModified = now,
+      };
 
       reports.Add(report);
 
-      return Created(new Uri($"/report/{report.Id}", UriKind.Relative), report);
+      return Created(Url.Link("GetReport", new { report.Id }), report);
     }
 
 
-    [HttpGet("report/{id:int}")]
+    [HttpGet("{id:int}", Name = "GetReport")]
     public IActionResult Get(int id)
     {
       if (!reports.Any(r => r.Id == id))
@@ -76,31 +81,44 @@ namespace zulu.Controllers
         return NotFound();
       }
 
-      return Ok(reports.First(r => r.Id == id));
+      var report = reports.First(r => r.Id == id);
+      var model = new ReportGetViewModel
+      {
+        Id = report.Id,
+        Title = report.Title,
+        Author = report.Author,
+        Content = report.Content,
+        Created = report.Created,
+        LastModified = report.LastModified,
+        Deleted = report.Deleted.HasValue,
+        Published = report.Published.HasValue
+      };
+
+      return Ok(model);
     }
 
 
-    [HttpPut("report/{id:int}")]
-    public IActionResult Put(int id, [FromBody]Report report)
+    [HttpPut("{id:int}")]
+    public IActionResult Put(int id, [FromBody]ReportPostViewModel model)
     {
-      var orig = reports.FirstOrDefault(r => r.Id == id);
-      if (orig == null)
+      var report = reports.FirstOrDefault(r => r.Id == id);
+      if (report == null)
       {
         return NotFound();
       }
 
       var now = DateTime.Now;
 
-      orig.Title = report.Title;
-      orig.Content = report.Content;
-      orig.Author = report.Author;
-      orig.LastModified = now;
+      report.Title = model.Title;
+      report.Content = model.Content;
+      report.Author = model.Author;
+      report.LastModified = now;
 
-      return Ok(orig);
+      return Ok(report);
     }
 
 
-    [HttpDelete("report/{id:int}")]
+    [HttpDelete("{id:int}")]
     public IActionResult Delete(int id)
     {
       var report = reports.FirstOrDefault(r => r.Id == id);
@@ -116,13 +134,47 @@ namespace zulu.Controllers
     }
 
 
-    [HttpPost("report/{id:int}/publish")]
+    [HttpPost("{id:int}/published")]
     public IActionResult Publish(int id)
     {
       var report = reports.FirstOrDefault(r => r.Id == id);
       if (report == null)
       {
         return NotFound();
+      }
+
+      report.Published = DateTime.Now;
+
+      return Ok(report);
+    }
+
+
+    [HttpGet("published")]
+    public IActionResult ListPublished(int offset = 0, int limit = 20)
+    {
+      var query = reports.Where(r => r.Deleted == null && r.Published != null);
+
+      var results = reports.Select(r => new ReportListViewModel
+      {
+        Id = r.Id,
+        Title = r.Title,
+        Author = r.Author,
+        Published = r.Published.HasValue,
+        Deleted = r.Deleted.HasValue
+      });
+
+      return Ok(results);
+    }
+
+
+    [HttpPost("published")]
+    [HttpPut("published")]
+    public IActionResult Publish([FromBody]ReportPublishViewModel model)
+    {
+      var report = reports.FirstOrDefault(r => r.Id == model.Id);
+      if (report == null)
+      {
+        return BadRequest();
       }
 
       report.Published = DateTime.Now;
