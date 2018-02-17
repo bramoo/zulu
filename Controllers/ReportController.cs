@@ -25,9 +25,9 @@ namespace zulu.Controllers
 
 
     [HttpGet("reports")]
-    public IEnumerable<Report> List()
+    public IActionResult List()
     {
-      return reports;
+      return Ok(reports);
     }
 
 
