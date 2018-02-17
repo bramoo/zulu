@@ -14,7 +14,7 @@ namespace zulu.Models
     public string Author { get; set; }
     public DateTime Created { get; set; }
     public DateTime LastModified { get; set; }
-    public DateTime Published { get; set; }
-    public DateTime Deleted { get; set; }
+    public DateTime? Published { get; set; }
+    public DateTime? Deleted { get; set; }
   }
 }
