@@ -8,6 +8,7 @@ import { RouterModule } from '@angular/router';
 // components
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
+import { FacebookLoginComponent } from './facebook-login/facebook-login.component';
 import { HomeComponent } from './home/home.component';
 import { ReportListComponent } from './report-list/report-list.component';
 import { ReportDetailsComponent } from './report-details/report-details.component';
@@ -27,7 +28,8 @@ import { AppRoutingModule } from './app-routing.module';
     ReportListComponent,
     ReportDetailsComponent,
     ReportEditComponent,
-    ReportCreateComponent
+    ReportCreateComponent,
+    FacebookLoginComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
