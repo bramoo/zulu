@@ -1,0 +1,13 @@
+<h1>Reports</h1>
+
+<a class="btn btn-primary" routerLink="create">Create</a>
+
+<h2>Loaded data</h2>
+
+<p *ngIf="!reports">Loading &hellip;</p>
+
+<ul *ngIf="reports">
+  <li *ngFor="let report of reports">
+    <a [routerLink]="report.id">{{ report.title }}</a> <button type="button" (click)="delete(report)" class="btn btn-danger btn-xs">Delete</button>
+  </li>
+</ul>

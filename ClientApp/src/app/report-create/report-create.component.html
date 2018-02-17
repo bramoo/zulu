@@ -1,0 +1,21 @@
+<h1>Create New Report</h1>
+
+<form (submit)="submit()" class="form">
+  <div class="form-group">
+    <label>Title</label>
+    <input name="title" [(ngModel)]="report.title" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label>Author</label>
+    <input name="author" [(ngModel)]="report.author" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label>Content</label>
+    <textarea name="content" [(ngModel)]="report.content" class="form-control"></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Save</button>
+  <a routerLink=".." class="btn btn-default">Cancel</a>
+</form>

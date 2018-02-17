@@ -1,0 +1,30 @@
+<h1>Report</h1>
+
+<p *ngIf="!report">Loading &hellip;</p>
+
+<div *ngIf="report">
+  <dl>
+    <dt>Id</dt>
+    <dd>{{ report.id }}</dd>
+
+    <dt>Title</dt>
+    <dd>{{ report.title }}</dd>
+
+    <dt>Content</dt>
+    <dd>{{ report.content }}</dd>
+
+    <dt>Author</dt>
+    <dd>{{ report.author }}</dd>
+
+    <dt>Created</dt>
+    <dd>{{ report.created}}</dd>
+
+    <dt>Modified</dt>
+    <dd>{{ report.lastmodified }}</dd>
+
+    <dt>Published</dt>
+    <dd>{{ report.published }}</dd>
+  </dl>
+
+  <a routerLink="edit" class="btn btn-primary">Edit</a>
+</div>
