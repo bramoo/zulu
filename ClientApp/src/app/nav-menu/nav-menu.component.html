@@ -1,38 +1,33 @@
-<div class='main-nav'>
-  <div class='navbar navbar-inverse'>
-    <div class='navbar-header'>
-      <button type='button' class='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse' [attr.aria-expanded]='isExpanded' (click)='toggle()'>
-        <span class='sr-only'>Toggle navigation</span>
-        <span class='icon-bar'></span>
-        <span class='icon-bar'></span>
-        <span class='icon-bar'></span>
-      </button>
-      <a class='navbar-brand' [routerLink]='["/"]'>zulu</a>
-    </div>
-    <div class='clearfix'></div>
-    <div class='navbar-collapse collapse' [ngClass]='{ "in": isExpanded }'>
-      <ul class='nav navbar-nav'>
-        <li [routerLinkActive]='["link-active"]' [routerLinkActiveOptions]='{ exact: true }'>
-          <a [routerLink]='["/"]' (click)='collapse()'>
-            <span class='glyphicon glyphicon-home'></span> Home
-          </a>
-        </li>
-        <li routerLinkActive="link-active">
-          <a routerLink="/login" (click)="collapse()">
-            <span class="glyphicon glyphicon-user"></span> Login
-          </a>
-        </li>
-        <li routerLinkActive="link-active">
-          <a routerLink="/events" (click)="collapse()">
-            <span class="glyphicon glyphicon-star"></span>Events
-          </a>
-        </li>
-        <li [routerLinkActive]='["link-active"]'>
-          <a [routerLink]='["/reports"]' (click)='collapse()'>
-            <span class='glyphicon glyphicon-book'></span> Reports
-          </a>
-        </li>>
-      </ul>
-    </div>
+<nav class="main-nav navbar navbar-dark bg-dark navbar-expand-lg">
+  <div class="navbar-header">
+    <a class="navbar-brand" routerLink="/">Zulu</a>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse" [attr.aria-expanded]="isExpanded" (click)="toggle()">
+      <span class='navbar-toggler-icon'></span>
+    </button>
   </div>
-</div>
+
+  <div class="navbar-collapse collapse" [ngClass]="{ 'collapse': !isExpanded }">
+    <ul class="navbar-nav">
+      <li class="nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+        <a class="nav-link" routerLink="/" (click)="collapse()">
+          <span class="glyphicon glyphicon-home"></span> Home
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/login" (click)="collapse()">
+          <span class="glyphicon glyphicon-user"></span> Login
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/events" (click)="collapse()">
+          <span class="glyphicon glyphicon-star"></span>Events
+        </a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/reports" (click)="collapse()">
+          <span class="glyphicon glyphicon-book"></span> Reports
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>

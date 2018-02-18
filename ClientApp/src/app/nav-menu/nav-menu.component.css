@@ -1,4 +1,4 @@
-li .glyphicon {
+/li .glyphicon {
     margin-right: 10px;
 }
 
@@ -29,14 +29,36 @@ li.link-active a:focus {
         border-radius: 0px;
         border-width: 0px;
         height: 100%;
+
+        flex-direction: column;
+        justify-content: flex-start;
+        align-content: flex-start;
+        align-items: flex-start;
     }
     .navbar-header {
         float: none;
     }
+
+    .navbar-toggler {
+      display: none;
+    }
+
     .navbar-collapse {
         border-top: 1px solid #444;
         padding: 0px;
+
+        flex-direction: column;
+        flex-basis: auto;
     }
+
+    .navbar-nav {
+      flex-direction: column;
+    }
+
+    .collapse {
+      display: block;
+    }
+
     .navbar ul {
         float: none;
     }

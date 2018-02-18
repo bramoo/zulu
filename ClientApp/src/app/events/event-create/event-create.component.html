@@ -16,11 +16,9 @@
     <input type="datetime" name="end" [(ngModel)]="event.end" class="form-control" />
   </div>
 
-  <div class="checkbox">
-    <label>
-      <input type="checkbox" name="allday" [(ngModel)]="event.allDay" />
-      All Day
-    </label>
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" name="allday" [(ngModel)]="event.allDay" />
+    <label class="form-check-label">All Day</label>
   </div>
 
   <button type="submit" class="btn btn-primary">Create</button>
