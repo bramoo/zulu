@@ -1,3 +1,32 @@
-<p>
-  event-edit works!
-</p>
+<h1>Edit Event</h1>
+
+<form (submit)="submit()">
+  <div class="form-group">
+    <label for="name">Name</label>
+    <input id="name" name="name" [(ngModel)]="event.name" class="form-control" />
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <div class="form-group">
+        <label for="start">Start</label>
+        <input type="datetime" id="start" name="start" [(ngModel)]="event.start" class="form-control" />
+      </div>
+    </div>
+
+    <div class="col">
+      <div class="form-group">
+        <label for="end">End</label>
+        <input type="datetime" id="end" name="end" [(ngModel)]="event.end" class="form-control" />
+      </div>
+    </div>
+  </div>
+
+  <div class="custom-control custom-checkbox mb-3">
+    <input type="checkbox" class="custom-control-input" id="allday" name="allday" [(ngModel)]="event.allDay" />
+    <label for="allday" class="custom-control-label">All Day</label>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Save</button>
+  <a routerLink=".." class="btn btn-outline-primary">Cancel</a>
+</form>

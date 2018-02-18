@@ -1,10 +1,8 @@
 <nav class="main-nav navbar navbar-dark bg-dark navbar-expand-lg">
-  <div class="navbar-header">
     <a class="navbar-brand" routerLink="/">Zulu</a>
-    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target=".navbar-collapse" [attr.aria-expanded]="isExpanded" (click)="toggle()">
+    <button type="button" class="navbar-toggler float-right" data-toggle="collapse" data-target=".navbar-collapse" [attr.aria-expanded]="isExpanded" (click)="toggle()">
       <span class='navbar-toggler-icon'></span>
     </button>
-  </div>
 
   <div class="navbar-collapse collapse" [ngClass]="{ 'collapse': !isExpanded }">
     <ul class="navbar-nav">

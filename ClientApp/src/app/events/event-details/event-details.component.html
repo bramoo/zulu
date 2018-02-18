@@ -2,22 +2,28 @@
 
 <p *ngIf="!event">Loading &hellip;</p>
 
-<dl *ngIf="event">
-  <dt>Id</dt>
-  <dd>{{ event.id }}</dd>
+<div *ngIf="event">
+  <div class="mb-3">
+    <a routerLink="edit" class="btn btn-primary">Edit</a>
+  </div>
 
-  <dt>Name</dt>
-  <dd>{{ event.name }}</dd>
+  <dl>
+    <dt>Id</dt>
+    <dd>{{ event.id }}</dd>
 
-  <dt>Start</dt>
-  <dd>{{ event.start }}</dd>
+    <dt>Name</dt>
+    <dd>{{ event.name }}</dd>
 
-  <dt>End</dt>
-  <dd>{{ event.end }}</dd>
+    <dt>Start</dt>
+    <dd>{{ event.start }}</dd>
 
-  <dt>All Day</dt>
-  <dd>{{ event.allDay }}</dd>
+    <dt>End</dt>
+    <dd>{{ event.end }}</dd>
 
-  <dt>Deleted</dt>
-  <dd>{{ event.deleted }}</dd>
-</dl>
+    <dt>All Day</dt>
+    <dd>{{ event.allDay }}</dd>
+
+    <dt>Deleted</dt>
+    <dd>{{ event.deleted }}</dd>
+  </dl>
+</div>

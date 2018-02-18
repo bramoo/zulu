@@ -3,6 +3,10 @@
 <p *ngIf="!report">Loading &hellip;</p>
 
 <div *ngIf="report">
+  <div class="mb-3">
+    <a routerLink="edit" class="btn btn-primary">Edit</a>
+  </div>
+
   <dl>
     <dt>Id</dt>
     <dd>{{ report.id }}</dd>
@@ -25,6 +29,4 @@
     <dt>Published</dt>
     <dd>{{ report.published }}</dd>
   </dl>
-
-  <a routerLink="edit" class="btn btn-primary">Edit</a>
 </div>
