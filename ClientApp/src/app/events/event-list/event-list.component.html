@@ -1,11 +1,22 @@
-<h1>Events</h1>
+<div class="container">
+  <h1>Events</h1>
 
-<a routerLink="create" class="btn btn-primary">Create</a>
+  <div class="row">
+    <div class="col-12">
+      <a routerLink="create" class="btn btn-primary">Create</a>
+    </div>
+  </div>
 
-<p *ngIf="!events">Loading &hellip;</p>
+  <div class="row">
+    <div class="col-12">
+      <p *ngIf="!events">Loading &hellip;</p>
 
-<ul *ngIf="events">
-  <li *ngFor="let event of events">
-    <a [routerLink]="event.id">{{ event.name }}</a><button type="button" (click)="delete(event)" class="btn btn-danger btn-xs">Delete</button>
-  </li>
-</ul>
+      <div *ngIf="events" class="list-group">
+        <div *ngFor="let event of events" class="list-group-item list-group-item-action">
+          <a [routerLink]="event.id">{{ event.name }}</a>
+          <button type="button" (click)="delete(event)" class="btn btn-danger btn-sm float-right">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
