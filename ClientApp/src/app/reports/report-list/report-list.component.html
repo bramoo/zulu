@@ -1,0 +1,22 @@
+<div class="container">
+  <h1>Reports</h1>
+
+  <div class="row">
+    <div class="col-12">
+      <a class="btn btn-primary" routerLink="create">Create</a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12">
+      <p *ngIf="!reports">Loading &hellip;</p>
+
+      <div *ngIf="reports" class="list-group">
+        <div *ngFor="let report of reports" class="list-group-item list-group-item-action">
+          <a [routerLink]="report.id">{{ report.title }}</a>
+          <button type="button" (click)="delete(report)" class="btn btn-danger btn-sm float-right">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -18,22 +18,22 @@ export class ReportsService {
   }
 
   public getReport(id: number): Observable<Report> {
-    return this.http.get(this.baseurl + 'api/v1/report/' + id.toString())
+    return this.http.get(this.baseurl + 'api/v1/reports/' + id.toString())
       .map(response => response.json() as Report);
   }
 
   public createReport(report: Report): Observable<boolean> {
-    return this.http.post(this.baseurl + 'api/v1/report', report)
+    return this.http.post(this.baseurl + 'api/v1/reports', report)
       .map(response => response.ok);
   }
 
   public editReport(report: Report): Observable<boolean> {
-    return this.http.put(this.baseurl + 'api/v1/report/' + report.id.toString(), report)
+    return this.http.put(this.baseurl + 'api/v1/reports/' + report.id.toString(), report)
       .map(response => response.ok);
   }
 
   public deleteReport(id: number): Observable<boolean> {
-    return this.http.delete(this.baseurl + 'api/v1/report/' + id.toString())
+    return this.http.delete(this.baseurl + 'api/v1/reports/' + id.toString())
       .map(response => response.ok);
   }
 }
