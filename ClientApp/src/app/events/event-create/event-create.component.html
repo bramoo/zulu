@@ -1,0 +1,27 @@
+<h1>Create New Event</h1>
+
+<form (submit)="submit()" class="form">
+  <div class="form-group">
+    <label>Name</label>
+    <input name="name" [(ngModel)]="event.name" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label>Start</label>
+    <input type="datetime" name="start" [(ngModel)]="event.start" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label>End</label>
+    <input type="datetime" name="end" [(ngModel)]="event.end" class="form-control" />
+  </div>
+
+  <div class="checkbox">
+    <label>
+      <input type="checkbox" name="allday" [(ngModel)]="event.allDay" />
+      All Day
+    </label>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Create</button>
+</form>

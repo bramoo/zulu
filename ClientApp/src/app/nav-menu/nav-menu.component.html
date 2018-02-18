@@ -19,7 +19,12 @@
         </li>
         <li routerLinkActive="link-active">
           <a routerLink="/login" (click)="collapse()">
-            Login
+            <span class="glyphicon glyphicon-user"></span> Login
+          </a>
+        </li>
+        <li routerLinkActive="link-active">
+          <a routerLink="/events" (click)="collapse()">
+            <span class="glyphicon glyphicon-star"></span>Events
           </a>
         </li>
         <li [routerLinkActive]='["link-active"]'>

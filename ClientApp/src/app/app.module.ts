@@ -1,3 +1,4 @@
+// angular
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
@@ -10,13 +11,10 @@ import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { FacebookLoginComponent } from './facebook-login/facebook-login.component';
 import { HomeComponent } from './home/home.component';
-import { ReportListComponent } from './report-list/report-list.component';
-import { ReportDetailsComponent } from './report-details/report-details.component';
-import { ReportEditComponent } from './report-edit/report-edit.component';
-import { ReportCreateComponent } from './report-create/report-create.component';
 
-// services
-import { ReportsService } from './reports.service';
+// modules
+import { EventsModule } from './events/events.module';
+import { ReportsModule } from './reports/reports.module';
 
 import { AppRoutingModule } from './app-routing.module';
 
@@ -25,10 +23,6 @@ import { AppRoutingModule } from './app-routing.module';
     AppComponent,
     NavMenuComponent,
     HomeComponent,
-    ReportListComponent,
-    ReportDetailsComponent,
-    ReportEditComponent,
-    ReportCreateComponent,
     FacebookLoginComponent
   ],
   imports: [
@@ -36,11 +30,11 @@ import { AppRoutingModule } from './app-routing.module';
     HttpModule,
     HttpClientModule,
     FormsModule,
+    EventsModule,
+    ReportsModule,
     AppRoutingModule
   ],
-  providers: [
-    ReportsService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

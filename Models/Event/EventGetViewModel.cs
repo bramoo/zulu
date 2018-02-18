@@ -13,7 +13,7 @@ namespace zulu.Models
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
 
-    public DateTime? Deleted { get; set; }
+    public bool Deleted { get; set; }
 
     public IEnumerable<ReportGetViewModel> Reports { get; set; }
   }

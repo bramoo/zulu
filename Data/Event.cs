@@ -15,6 +15,6 @@ namespace zulu.Data
 
     public DateTime? Deleted { get; set; }
 
-    public ICollection<Report> Reports { get; set; }
+    public ICollection<Report> Reports { get; set; } = new List<Report>();
   }
 }

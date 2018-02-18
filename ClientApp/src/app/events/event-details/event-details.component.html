@@ -1,0 +1,23 @@
+<h1>Event</h1>
+
+<p *ngIf="!event">Loading &hellip;</p>
+
+<dl *ngIf="event">
+  <dt>Id</dt>
+  <dd>{{ event.id }}</dd>
+
+  <dt>Name</dt>
+  <dd>{{ event.name }}</dd>
+
+  <dt>Start</dt>
+  <dd>{{ event.start }}</dd>
+
+  <dt>End</dt>
+  <dd>{{ event.end }}</dd>
+
+  <dt>All Day</dt>
+  <dd>{{ event.allDay }}</dd>
+
+  <dt>Deleted</dt>
+  <dd>{{ event.deleted }}</dd>
+</dl>

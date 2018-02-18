@@ -96,7 +96,7 @@ namespace zulu.Controllers
         })
       };
 
-      return base.Ok(@event);
+      return base.Ok(model);
     }
 
 

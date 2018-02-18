@@ -1,0 +1,11 @@
+<h1>Events</h1>
+
+<a routerLink="create" class="btn btn-primary">Create</a>
+
+<p *ngIf="!events">Loading &hellip;</p>
+
+<ul *ngIf="events">
+  <li *ngFor="let event of events">
+    <a [routerLink]="event.id">{{ event.name }}</a><button type="button" (click)="delete(event)" class="btn btn-danger btn-xs">Delete</button>
+  </li>
+</ul>
