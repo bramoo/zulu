@@ -17,8 +17,8 @@ export class ReportCreateComponent {
       author: "",
       content: "",
       created: new Date(0),
-      lastmodified: new Date(0),
-      published: null
+      modified: new Date(0),
+      state: 0
     };
   }
 

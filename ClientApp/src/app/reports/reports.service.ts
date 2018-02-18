@@ -43,8 +43,8 @@ export interface Report {
   id: number;
   title: string;
   content: string;
-  created: Date;
-  lastmodified: Date;
-  published: Date;
   author: string;
+  created: Date;
+  modified: Date;
+  state: number;
 }
