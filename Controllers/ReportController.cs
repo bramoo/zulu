@@ -14,19 +14,6 @@ namespace zulu.Controllers
   [Route("api/v1/reports")]
   public class ReportController : EntityController<Report>
   {
-    //private static List<Report> reports;
-
-    //static ReportController()
-    //{
-    //  reports = new List<Report>
-    //  {
-    //    new Report { Id = 1, Title = "Report One", Content = "Test report for report one." },
-    //    new Report { Id = 2, Title = "Report Two", Content = "Test report for report two." },
-    //    new Report { Id = 3, Title = "Report Three", Content = "Test report for report three." },
-    //    new Report { Id = 4, Title = "Report Four", Content = "Test report for report four." }
-    //  };
-    //}
-
     public ReportController(AppDbContext dbContext)
       : base(dbContext)
     {
@@ -48,7 +35,7 @@ namespace zulu.Controllers
     public new async Task<IActionResult> ListPublished() => await base.ListPublished();
 
 
-    [HttpGet("draft", Name = "DeletedReports")]
+    [HttpGet("deleted", Name = "DeletedReports")]
     public new async Task<IActionResult> ListDeleted() => await base.ListDeleted();
 
 
@@ -60,18 +47,24 @@ namespace zulu.Controllers
     public new async Task<IActionResult> Delete(int id) => await base.Delete(id);
 
 
-    [HttpPost("", Name = "UndeleteReports")]
-    public new async Task<IActionResult> Undelete([FromBody]int id, [FromBody]Report model) => await base.Undelete(id, model);
+    [HttpPost("{id:int}", Name = "UndeleteReports")]
+    public new async Task<IActionResult> Undelete(int id) => await base.Undelete(id);
 
 
     [HttpPost("published")]
-    public new async Task<IActionResult> Publish([FromBody]int id) => await base.Publish(id);
+    public new async Task<IActionResult> Publish([FromBody]Report model) => await base.Publish(model);
 
 
     [HttpDelete("published/{id:int}")]
     public new async Task<IActionResult> Unpublish(int id) => await base.Unpublish(id);
 
 
+    [HttpDelete("published")]
+    public async Task<IActionResult> UnpublishFB([FromBody]Report model) => await base.Unpublish(model.Id);
+
+
+    [HttpPost("")]
+    public new async Task<IActionResult> Post([FromBody]Report model) => await base.Post(model);
 
 
     [HttpPut("{id:int}")]

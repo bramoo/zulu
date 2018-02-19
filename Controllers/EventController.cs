@@ -13,18 +13,6 @@ namespace zulu.Controllers
   [Route("api/v1/events")]
   public class EventController : EntityController<Event>
   {
-    //private static List<Event> events;
-
-    //static EventController()
-    //{
-    //  events = new List<Event>
-    //  {
-    //    new Event {Id = 1, Name = "Event 1", Start = DateTime.Today, End = DateTime.Today.AddDays(1), AllDay = true },
-    //    new Event {Id = 2, Name = "Event 2", Start = DateTime.Today.AddHours(9), End = DateTime.Today.AddHours(12), AllDay = false },
-    //    new Event {Id = 3, Name = "Event 3", Start = DateTime.Today, End = DateTime.Today.AddDays(2), AllDay = true },
-    //  };
-    //}
-
     public EventController(AppDbContext dbContext)
       :base(dbContext)
     {
@@ -45,7 +33,7 @@ namespace zulu.Controllers
     public new async Task<IActionResult> ListPublished() => await base.ListPublished();
 
 
-    [HttpGet("draft", Name = "DeletedEvents")]
+    [HttpGet("deleted", Name = "DeletedEvents")]
     public new async Task<IActionResult> ListDeleted() => await base.ListDeleted();
 
 
@@ -58,16 +46,23 @@ namespace zulu.Controllers
 
 
     [HttpPost("", Name = "UndeleteEvents")]
-    public new async Task<IActionResult> Undelete([FromBody]int id, [FromBody]Event model) => await base.Undelete(id, model);
+    public new async Task<IActionResult> Undelete(int id) => await base.Undelete(id);
 
 
     [HttpPost("published")]
-    public new async Task<IActionResult> Publish([FromBody]int id) => await base.Publish(id);
+    public new async Task<IActionResult> Publish([FromBody]Event model) => await base.Publish(model);
 
 
     [HttpDelete("published/{id:int}")]
     public new async Task<IActionResult> Unpublish(int id) => await base.Unpublish(id);
 
+
+    [HttpDelete("published")]
+    public async Task<IActionResult> UnpublishFB([FromBody]Event model) => await base.Unpublish(model.Id);
+
+
+    [HttpPost("")]
+    public new async Task<IActionResult> Post([FromBody]Event model) => await base.Post(model);
 
 
 

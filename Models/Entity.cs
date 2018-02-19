@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -20,11 +23,10 @@ namespace zulu.Models
       Created = Modified = DateTime.Now;
     }
 
-
-    [BindNever]
     public int Id { get; set; }
 
     [BindNever]
+    [JsonConverter(typeof(StringEnumConverter))]
     public EntityState State { get; set; }
 
     [BindNever]
