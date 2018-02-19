@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using zulu.Models;
 
 namespace zulu.Data
 {
-  public class AppDbContext : DbContext
+  public class AppDbContext : IdentityDbContext<AppUser>
   {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -25,7 +26,8 @@ namespace zulu.Data
       base.OnModelCreating(modelBuilder);
 
       modelBuilder.Entity<EventReport>().HasKey(er => new { er.EventId, er.ReportId });
-      modelBuilder.Entity<Event>().HasMany(e => e.Reports).WithOne(r => r.Event);
+      modelBuilder.Entity<EventReport>().HasOne(er => er.Event).WithMany(e => e.EventReports);
+      modelBuilder.Entity<EventReport>().HasOne(er => er.Report).WithOne(r => r.EventReport);
     }
 
     #region SaveChanges Overrides
