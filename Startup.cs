@@ -103,6 +103,7 @@ namespace zulu
         app.UseExceptionHandler("/Home/Error");
       }
 
+      app.UseAuthentication();
       app.UseStaticFiles();
       app.UseSpaStaticFiles();
 
