@@ -1,3 +1,5 @@
+using AutoMapper;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -82,7 +84,10 @@ namespace zulu
         configureOptions.SaveToken = true;
       });
 
-      services.AddMvc();
+      services.AddAutoMapper();
+
+      services.AddMvc()
+          .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
       // In production, the Angular files will be served from this directory
       services.AddSpaStaticFiles(configuration =>
