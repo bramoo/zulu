@@ -87,14 +87,12 @@ namespace zulu.Controllers
 
 
     [NonAction]
-    protected async Task<IActionResult> Undelete(int id, T model)
+    protected async Task<IActionResult> Undelete(int id)
     {
       var entity = await Entities.SingleOrDefaultAsync(e => e.Id == id);
       if (entity == null)
       {
-        await Entities.AddAsync(model);
-        await DbContext.SaveChangesAsync();
-        return CreatedAtAction("Get", new { model.Id }, model);
+        return NotFound();
       }
 
       if (entity.UnDelete())
@@ -108,9 +106,9 @@ namespace zulu.Controllers
 
 
     [NonAction]
-    protected async Task<IActionResult> Publish(int id)
+    protected async Task<IActionResult> Publish(T model)
     {
-      var entity = await Entities.SingleOrDefaultAsync(e => e.Id == id);
+      var entity = await Entities.SingleOrDefaultAsync(e => e.Id == model.Id);
       if (entity == null)
       {
         return NotFound();
@@ -124,6 +122,7 @@ namespace zulu.Controllers
 
       return BadRequest(); //TODO Error messages.
     }
+
 
     [NonAction]
     protected async Task<IActionResult> Unpublish(int id)
@@ -143,5 +142,13 @@ namespace zulu.Controllers
       return BadRequest(); //TODO Error messages.
     }
 
+
+    [NonAction]
+    protected async Task<IActionResult> Post(T model)
+    {
+      await Entities.AddAsync(model);
+      await DbContext.SaveChangesAsync();
+      return CreatedAtAction("Get", new { model.Id }, model);
+    }
   }
 }
