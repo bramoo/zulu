@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Route, RouterModule } from '@angular/router';
+import { AuthGuard } from "../auth/auth.guard";
 
 import { EventListComponent } from './event-list/event-list.component';
 import { EventCreateComponent } from './event-create/event-create.component';
@@ -12,7 +13,7 @@ import { EventsService } from './events.service';
 
 const eventRoutes: Route[] = [
   {
-    path: 'events', children: [
+    path: 'events', canActivate:[AuthGuard], children: [
       { path: '', component: EventListComponent },
       { path: 'create', component: EventCreateComponent },
       { path: ':eventid', component: EventDetailsComponent },

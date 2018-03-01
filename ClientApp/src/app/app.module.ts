@@ -13,6 +13,7 @@ import { FacebookLoginComponent } from './facebook-login/facebook-login.componen
 import { HomeComponent } from './home/home.component';
 
 // modules
+import { AuthModule } from './auth/auth.module';
 import { EventsModule } from './events/events.module';
 import { ReportsModule } from './reports/reports.module';
 
@@ -30,6 +31,7 @@ import { AppRoutingModule } from './app-routing.module';
     HttpModule,
     HttpClientModule,
     FormsModule,
+    AuthModule,
     EventsModule,
     ReportsModule,
     AppRoutingModule

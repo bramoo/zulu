@@ -36,7 +36,21 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="ClientApp\src\app\auth\auth.guard.ts" />
+    <None Remove="ClientApp\src\app\auth\auth.module.ts" />
+    <None Remove="ClientApp\src\app\auth\auth.service.ts" />
+    <None Remove="ClientApp\src\app\auth\login.component.ts" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\facebook-auth.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <TypeScriptCompile Include="ClientApp\src\app\auth\auth.guard.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\auth\auth.module.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\auth\auth.service.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\auth\login.component.ts" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

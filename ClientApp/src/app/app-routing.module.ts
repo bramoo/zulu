@@ -5,8 +5,8 @@ import { FacebookLoginComponent } from './facebook-login/facebook-login.componen
 import { HomeComponent } from './home/home.component';
 
 const routes: Route[] = [
-  { path: '', component: HomeComponent },
-  { path: 'login', component: FacebookLoginComponent }
+  { path: "home", component: HomeComponent },
+  { path: "", redirectTo: "home", pathMatch: "full" }
 ];
 
 @NgModule({
