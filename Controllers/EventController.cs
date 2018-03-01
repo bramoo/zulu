@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using zulu.Data;
@@ -11,6 +12,7 @@ namespace zulu.Controllers
 {
   [Produces("application/json")]
   [Route("api/v1/events")]
+  [Authorize]
   public class EventController : EntityController<Event>
   {
     public EventController(AppDbContext dbContext)
