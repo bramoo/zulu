@@ -39,6 +39,22 @@ export class AuthService {
       );
   }
 
+  public fbLogin(token: string): Observable<boolean> {
+    let headers = new Headers({ "Content-Type": "application/json" });
+    return this.http.post("/api/v1/fbauth", token, { headers: headers })
+      .pipe(
+      map(response => {
+        let token = response.json() && response.json().token;
+        if (token) {
+          localStorage.setItem("token", token);
+          return true;
+        }
+        else {
+          return false;
+        }
+      }));
+  }
+
   public logout() {
     localStorage.removeItem("token");
   }
