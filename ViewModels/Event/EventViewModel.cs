@@ -18,7 +18,7 @@ namespace zulu.ViewModels.Event
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
 
-    public IEnumerable<ReportViewModel> Reports { get; set; }
+    public IEnumerable<ListReportViewModel> Reports { get; set; }
   }
 
 
@@ -31,7 +31,7 @@ namespace zulu.ViewModels.Event
       RuleFor(e => e.Start).NotEmpty();
       RuleFor(e => e.End).NotEmpty().GreaterThan(e => e.Start).WithMessage("'End' must be greater than 'Start'");
 
-      RuleFor(e => e.Reports).SetCollectionValidator(new ReportViewModelValidator());
+      RuleFor(e => e.Reports).SetCollectionValidator(new ListReportViewModelValidator());
     }
   }
 

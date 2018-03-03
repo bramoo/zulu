@@ -44,7 +44,7 @@ namespace zulu.Controllers
 
     private async Task<IActionResult> ListUndeleted()
     {
-      var reports = await DbContext.Reports.Where(r => r.State != Models.EntityState.Deleted).ToListAsync();
+      var reports = await DbContext.Reports.Where(r => r.State != Models.EntityState.Deleted).Select(r => Mapper.Map<ListReportViewModel>(r)).ToListAsync();
       return Ok(reports);
     }
 
@@ -52,7 +52,7 @@ namespace zulu.Controllers
     [HttpGet("draft")]
     public async Task<IActionResult> ListDraft()
     {
-      var reports = await DbContext.Reports.Where(r => r.State == Models.EntityState.Draft).ToListAsync();
+      var reports = await DbContext.Reports.Where(r => r.State == Models.EntityState.Draft).Select(r => Mapper.Map<ListReportViewModel>(r)).ToListAsync();
       return Ok(reports);
     }
 
@@ -60,7 +60,7 @@ namespace zulu.Controllers
     [HttpGet("published")]
     public async Task<IActionResult> ListPublished()
     {
-      var reports = await DbContext.Reports.Where(r => r.State == Models.EntityState.Published).ToListAsync();
+      var reports = await DbContext.Reports.Where(r => r.State == Models.EntityState.Published).Select(r => Mapper.Map<ListReportViewModel>(r)).ToListAsync();
       return Ok(reports);
     }
 
@@ -68,7 +68,7 @@ namespace zulu.Controllers
     [HttpGet("deleted")]
     public async Task<IActionResult> ListDeleted()
     {
-      var reports = await DbContext.Reports.Where(r => r.State == Models.EntityState.Deleted).ToListAsync();
+      var reports = await DbContext.Reports.Where(r => r.State == Models.EntityState.Deleted).Select(r => Mapper.Map<ListReportViewModel>(r)).ToListAsync();
       return Ok(reports);
     }
 
@@ -84,7 +84,7 @@ namespace zulu.Controllers
 
       if (User.Identity.IsAuthenticated || report.State == Models.EntityState.Published)
       {
-        return Ok(report);
+        return Ok(Mapper.Map<ReportViewModel>(report));
       }
 
       return Unauthorized();
@@ -110,23 +110,23 @@ namespace zulu.Controllers
     }
 
 
-    [HttpPost("{id:int}")]
-    public async Task<IActionResult> Undelete(int id)
-    {
-      var report = await DbContext.Reports.SingleOrDefaultAsync(e => e.Id == id);
-      if (report == null)
-      {
-        return NotFound();
-      }
+    //[HttpPost("{id:int}")]
+    //public async Task<IActionResult> Undelete(int id)
+    //{
+    //  var report = await DbContext.Reports.SingleOrDefaultAsync(e => e.Id == id);
+    //  if (report == null)
+    //  {
+    //    return NotFound();
+    //  }
 
-      if (report.UnDelete())
-      {
-        await DbContext.SaveChangesAsync();
-        return CreatedAtAction("GetReport", new { report.Id }, report);
-      }
+    //  if (report.UnDelete())
+    //  {
+    //    await DbContext.SaveChangesAsync();
+    //    return CreatedAtRoute("GetReport", new { report.Id }, report);
+    //  }
 
-      return BadRequest(); //TODO Error messages.
-    }
+    //  return BadRequest(); //TODO Error messages.
+    //}
 
 
     [HttpPost("published")]
@@ -166,7 +166,7 @@ namespace zulu.Controllers
         {
           await DbContext.Reports.AddAsync(report);
           await DbContext.SaveChangesAsync();
-          return CreatedAtAction("GetReport", new { report.Id }, Mapper.Map<ReportViewModel>(report));
+          return CreatedAtRoute("GetReport", new { report.Id }, Mapper.Map<ReportViewModel>(report));
         }
       }
 
@@ -200,7 +200,7 @@ namespace zulu.Controllers
 
       await DbContext.Reports.AddAsync(report);
       await DbContext.SaveChangesAsync();
-      return CreatedAtAction("GetReport", new { report.Id }, Mapper.Map<ReportViewModel>(report));
+      return CreatedAtRoute("GetReport", new { report.Id }, Mapper.Map<ReportViewModel>(report));
     }
 
 
@@ -217,7 +217,7 @@ namespace zulu.Controllers
 
       await DbContext.SaveChangesAsync();
 
-      return Ok(report);
+      return Ok(Mapper.Map<ReportViewModel>(report));
     }
   }
 }

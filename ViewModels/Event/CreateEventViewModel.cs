@@ -2,6 +2,8 @@ using AutoMapper;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using zulu.Models;
 using zulu.ViewModels.Report;
 
 namespace zulu.ViewModels.Event
@@ -34,13 +36,8 @@ namespace zulu.ViewModels.Event
   {
     public CreateEventViewModelProfile()
     {
-      CreateMap<zulu.Models.EventReport, CreateReportViewModel>()
-          .ForMember(d => d.Title, opt => opt.MapFrom(src => src.Report.Title))
-          .ForMember(d => d.Content, opt => opt.MapFrom(src => src.Report.Content))
-          .ForMember(d => d.Author, opt => opt.MapFrom(src => src.Report.Author))
-          .ReverseMap();
-
-      CreateMap<CreateEventViewModel, zulu.Models.Event>();
+      CreateMap<CreateEventViewModel, zulu.Models.Event>()
+        .ForMember(d => d.EventReports, opt => opt.MapFrom(src => src.Reports.Select(r => new EventReport { Report = Mapper.Map<zulu.Models.Report>(r) }).ToList()));
     }
   }
 }

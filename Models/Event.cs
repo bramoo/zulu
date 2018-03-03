@@ -7,6 +7,11 @@ namespace zulu.Models
 {
 	public class Event : Entity
   {
+    public Event()
+    {
+      EventReports = new List<EventReport>();
+    }
+
     public string Name { get; set; }
     public bool AllDay { get; set; }
     public DateTime Start { get; set; }
