@@ -15,17 +15,20 @@ using zulu.Attributes;
 using zulu.Data;
 using zulu.Services;
 using zulu.ViewModels.Event;
+using zulu.ViewModels.Report;
 
 namespace zulu
 {
-	public class Startup
+  public class Startup
   {
     public Startup(IConfiguration configuration)
     {
       Configuration = configuration;
     }
 
+
     public IConfiguration Configuration { get; }
+
 
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
@@ -48,6 +51,10 @@ namespace zulu
         mapperConfig.AddProfile<CreateEventViewModelProfile>();
         mapperConfig.AddProfile<EditEventViewModelProfile>();
         mapperConfig.AddProfile<EventViewModelProfile>();
+
+        mapperConfig.AddProfile<CreateReportViewModelProfile>();
+        mapperConfig.AddProfile<EditReportViewModelProfile>();
+        mapperConfig.AddProfile<ReportViewModelProfile>();
       });
 
       services.AddMvc(options =>
@@ -94,6 +101,7 @@ namespace zulu
         }
       });
     }
+
 
     private void ConfigureJwtBearerOptions(IServiceCollection services, JwtBearerOptions jwtBearerOptions)
     {

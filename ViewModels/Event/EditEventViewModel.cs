@@ -1,16 +1,20 @@
 using AutoMapper;
 using FluentValidation;
 using System;
+using System.Collections.Generic;
+using zulu.ViewModels.Report;
 
 namespace zulu.ViewModels.Event
 {
-	public class EditEventViewModel
+  public class EditEventViewModel
   {
     public int Id { get; set; }
     public string Name { get; set; }
     public bool AllDay { get; set; }
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
+
+    public IEnumerable<EditReportViewModel> Reports { get; set; }
   }
 
 
@@ -21,6 +25,8 @@ namespace zulu.ViewModels.Event
       RuleFor(e => e.Name).NotEmpty();
       RuleFor(e => e.Start).NotEmpty();
       RuleFor(e => e.End).NotEmpty().GreaterThan(e => e.Start).WithMessage("'End' must be greater than 'Start'");
+
+      RuleFor(e => e.Reports).SetCollectionValidator(new EditReportViewModelValidator());
     }
   }
 
