@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace zulu.Models
 {
-  public class Report : Entity
+	public class Report : Entity
   {
     public string Title { get; set; }
     public string Content { get; set; }

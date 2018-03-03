@@ -11,7 +11,7 @@ using zulu.ViewModels;
 
 namespace zulu.Controllers
 {
-  [Route("/api/v1/auth")]
+	[Route("/api/v1/auth")]
   public class AuthController : Controller
   {
     private readonly UserManager<AppUser> _userManager;

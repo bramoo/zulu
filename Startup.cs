@@ -1,6 +1,5 @@
 using AutoMapper;
 using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -12,12 +11,14 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Text;
+using zulu.Attributes;
 using zulu.Data;
 using zulu.Services;
+using zulu.ViewModels.Event;
 
 namespace zulu
 {
-  public class Startup
+	public class Startup
   {
     public Startup(IConfiguration configuration)
     {
@@ -29,65 +30,30 @@ namespace zulu
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
-      var jwtSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtSecretKey"]));
-
-      // jwt wire up
-      // Get options from app settings
-      var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
-
-      // Configure JwtIssuerOptions
-      services.Configure<JwtIssuerOptions>(options =>
-      {
-        options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
-        options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
-        options.SigningCredentials = new SigningCredentials(jwtSigningKey, SecurityAlgorithms.HmacSha256);
-      });
-
-      var tokenValidationParameters = new TokenValidationParameters
-      {
-        ValidateIssuer = true,
-        ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
-
-        ValidateAudience = true,
-        ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
-
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = jwtSigningKey,
-
-        RequireExpirationTime = false,
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero
-      };
-
-      //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear(); // => remove default claims
-
-      services.AddScoped<IJwtService, JwtService>();
-
       services.AddDbContext<AppDbContext>(options =>
           options.UseSqlite("Data Source=zulu.db"));
 
       services.AddIdentity<AppUser, IdentityRole>()
           .AddEntityFrameworkStores<AppDbContext>();
 
-      //services.AddAuthentication(authenticationOptions)
-      //    .AddJwtBearer(jwtBearerOptions);
-
       services.AddAuthentication(options =>
       {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-      }).AddJwtBearer(configureOptions =>
+      }).AddJwtBearer(configureOptions => ConfigureJwtBearerOptions(services, configureOptions));
+
+      services.AddAutoMapper(mapperConfig =>
       {
-        configureOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
-        configureOptions.TokenValidationParameters = tokenValidationParameters;
-        configureOptions.SaveToken = true;
+        mapperConfig.AddProfile<CreateEventViewModelProfile>();
+        mapperConfig.AddProfile<EditEventViewModelProfile>();
+        mapperConfig.AddProfile<EventViewModelProfile>();
       });
 
-      services.AddAutoMapper();
-
-      services.AddMvc()
-          .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
+      services.AddMvc(options =>
+      {
+        options.Filters.Add(new ValidateModelAttribute());
+      }).AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
       // In production, the Angular files will be served from this directory
       services.AddSpaStaticFiles(configuration =>
@@ -95,6 +61,7 @@ namespace zulu
         configuration.RootPath = "ClientApp/dist";
       });
     }
+
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
     public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -126,6 +93,41 @@ namespace zulu
           spa.UseAngularCliServer(npmScript: "start");
         }
       });
+    }
+
+    private void ConfigureJwtBearerOptions(IServiceCollection services, JwtBearerOptions jwtBearerOptions)
+    {
+      var jwtSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtSecretKey"]));
+
+      var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+      services.Configure<JwtIssuerOptions>(options =>
+      {
+        options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+        options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
+        options.SigningCredentials = new SigningCredentials(jwtSigningKey, SecurityAlgorithms.HmacSha256);
+      });
+
+      var tokenValidationParameters = new TokenValidationParameters
+      {
+        ValidateIssuer = true,
+        ValidIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)],
+
+        ValidateAudience = true,
+        ValidAudience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)],
+
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = jwtSigningKey,
+
+        RequireExpirationTime = false,
+        ValidateLifetime = true,
+        ClockSkew = TimeSpan.Zero
+      };
+
+      services.AddScoped<IJwtService, JwtService>();
+
+      jwtBearerOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+      jwtBearerOptions.TokenValidationParameters = tokenValidationParameters;
+      jwtBearerOptions.SaveToken = true;
     }
   }
 }

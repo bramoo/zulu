@@ -2,14 +2,10 @@
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace zulu.Models
 {
-  public enum EntityState
+	public enum EntityState
   {
     Draft,
     Published,
@@ -38,7 +34,7 @@ namespace zulu.Models
 
     public bool Publish()
     {
-      if(State == EntityState.Draft)
+      if (State == EntityState.Draft)
       {
         State = EntityState.Published;
         return true;
@@ -50,7 +46,7 @@ namespace zulu.Models
 
     public bool UnPublish()
     {
-      if(State == EntityState.Published)
+      if (State == EntityState.Published)
       {
         State = EntityState.Draft;
         return true;
@@ -69,7 +65,7 @@ namespace zulu.Models
 
     public bool UnDelete()
     {
-      if(State == EntityState.Deleted)
+      if (State == EntityState.Deleted)
       {
         State = EntityState.Draft;
         return true;

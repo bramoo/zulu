@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using zulu.Models;
 
 namespace zulu.Data
 {
-  public class SeedData
+	public class SeedData
   {
     internal static void Initialize(IServiceProvider services)
     {

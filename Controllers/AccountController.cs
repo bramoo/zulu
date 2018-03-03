@@ -6,7 +6,7 @@ using zulu.ViewModels;
 
 namespace zulu.Controllers
 {
-  [Route("api/v1/accounts")]
+	[Route("api/v1/accounts")]
   public class AccountController : Controller
   {
     private readonly AppDbContext _appDbContext;

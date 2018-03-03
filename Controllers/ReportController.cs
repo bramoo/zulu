@@ -1,16 +1,13 @@
-﻿using Microsoft.AspNetCore.Http.Extensions;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using zulu.Data;
 using zulu.Models;
 
 namespace zulu.Controllers
 {
-  [Produces("application/json")]
+	[Produces("application/json")]
   [Route("api/v1/reports")]
   public class ReportController : EntityController<Report>
   {

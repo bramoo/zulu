@@ -39,6 +39,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="zulu.db" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="wwwroot\facebook-auth.html" />
   </ItemGroup>
 

@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace zulu.Models
 {
-  public class Event : Entity
+	public class Event : Entity
   {
     public string Name { get; set; }
     public bool AllDay { get; set; }

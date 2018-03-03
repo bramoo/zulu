@@ -7,7 +7,7 @@ using zulu.Extensions;
 
 namespace zulu.Services
 {
-  public static class JwtClaimIdentifiers
+	public static class JwtClaimIdentifiers
   {
     public const string Rol = "rol", Id = "id";
   }
@@ -56,14 +56,5 @@ namespace zulu.Services
 
       return new JwtSecurityTokenHandler().WriteToken(token);
     }
-
-    //public ClaimsIdentity GenerateClaimsIdentity(string userName, string id)
-    //{
-    //  return new ClaimsIdentity(new GenericIdentity(userName, "Token"), new[]
-    //  {
-    //            new Claim(Helpers.Constants.Strings.JwtClaimIdentifiers.Id, id),
-    //            new Claim(Helpers.Constants.Strings.JwtClaimIdentifiers.Rol, Helpers.Constants.Strings.JwtClaims.ApiAccess)
-    //        });
-    //}
   }
 }

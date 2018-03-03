@@ -2,7 +2,7 @@
 
 namespace zulu.Data
 {
-    public class AppUser : IdentityUser
+	public class AppUser : IdentityUser
     {
     }
 }

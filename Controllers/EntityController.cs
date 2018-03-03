@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using zulu.Data;
@@ -9,7 +8,7 @@ using zulu.Models;
 
 namespace zulu.Controllers
 {
-  [Route("api/v1/{controller}")]
+	[Route("api/v1/{controller}")]
   public abstract class EntityController<T> : Controller where T : Entity
   {
     protected AppDbContext DbContext { get; }
