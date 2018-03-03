@@ -33,18 +33,30 @@ namespace zulu
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices(IServiceCollection services)
     {
+      var jwtSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtSecretKey"]));
+
+      var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
+      services.Configure<JwtIssuerOptions>(options =>
+      {
+        options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
+        options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
+        options.SigningCredentials = new SigningCredentials(jwtSigningKey, SecurityAlgorithms.HmacSha256);
+      });
+
       services.AddDbContext<AppDbContext>(options =>
           options.UseSqlite("Data Source=zulu.db"));
 
       services.AddIdentity<AppUser, IdentityRole>()
           .AddEntityFrameworkStores<AppDbContext>();
 
+      services.AddScoped<IJwtService, JwtService>();
+
       services.AddAuthentication(options =>
       {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-      }).AddJwtBearer(configureOptions => ConfigureJwtBearerOptions(services, configureOptions));
+      }).AddJwtBearer(configureOptions => ConfigureJwtBearerOptions(configureOptions, jwtAppSettingOptions, jwtSigningKey));
 
       services.AddAutoMapper(mapperConfig =>
       {
@@ -103,18 +115,8 @@ namespace zulu
     }
 
 
-    private void ConfigureJwtBearerOptions(IServiceCollection services, JwtBearerOptions jwtBearerOptions)
+    private static void ConfigureJwtBearerOptions(JwtBearerOptions jwtBearerOptions, IConfigurationSection jwtAppSettingOptions, SymmetricSecurityKey jwtSigningKey)
     {
-      var jwtSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration["JwtSecretKey"]));
-
-      var jwtAppSettingOptions = Configuration.GetSection(nameof(JwtIssuerOptions));
-      services.Configure<JwtIssuerOptions>(options =>
-      {
-        options.Issuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
-        options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
-        options.SigningCredentials = new SigningCredentials(jwtSigningKey, SecurityAlgorithms.HmacSha256);
-      });
-
       var tokenValidationParameters = new TokenValidationParameters
       {
         ValidateIssuer = true,
@@ -131,7 +133,6 @@ namespace zulu
         ClockSkew = TimeSpan.Zero
       };
 
-      services.AddScoped<IJwtService, JwtService>();
 
       jwtBearerOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
       jwtBearerOptions.TokenValidationParameters = tokenValidationParameters;

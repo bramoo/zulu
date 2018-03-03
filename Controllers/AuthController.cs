@@ -29,7 +29,7 @@ namespace zulu.Controllers
     }
 
 
-    [HttpPost("")]
+    [HttpPost]
     public async Task<IActionResult> Login([FromBody]CredentialsViewModel model)
     {
       var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
@@ -66,27 +66,5 @@ namespace zulu.Controllers
     {
       return Redirect("https://pensivesquirrel.files.wordpress.com/2013/09/secret-sqjuirrel-2.gif");
     }
-
-
-
-    //private async Task<ClaimsIdentity> GetClaimsIdentity(string userName, string password)
-    //{
-    //  if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
-    //    return await Task.FromResult<ClaimsIdentity>(null);
-
-    //  // get the user to verifty
-    //  var userToVerify = await _userManager.FindByNameAsync(userName);
-
-    //  if (userToVerify == null) return await Task.FromResult<ClaimsIdentity>(null);
-
-    //  // check the credentials
-    //  if (await _userManager.CheckPasswordAsync(userToVerify, password))
-    //  {
-    //    return await Task.FromResult(_jwtService.GenerateClaimsIdentity(userName, userToVerify.Id));
-    //  }
-
-    //  // Credentials are invalid, or account doesn't exist
-    //  return await Task.FromResult<ClaimsIdentity>(null);
-    //}
   }
 }
