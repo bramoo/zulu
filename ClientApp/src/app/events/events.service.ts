@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
+import { AuthHttp } from "angular2-jwt";
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -9,7 +10,7 @@ export class EventsService {
 
   constructor(
     @Inject("BASE_URL") private baseurl: string,
-    private http: Http
+    private http: AuthHttp
   ) { }
 
   public getEvents(): Observable<Event[]> {

@@ -9,10 +9,10 @@ import { RouterModule } from '@angular/router';
 // components
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { FacebookLoginComponent } from './facebook-login/facebook-login.component';
 import { HomeComponent } from './home/home.component';
 
 // modules
+import { AuthModule } from './auth/auth.module';
 import { EventsModule } from './events/events.module';
 import { ReportsModule } from './reports/reports.module';
 
@@ -22,14 +22,14 @@ import { AppRoutingModule } from './app-routing.module';
   declarations: [
     AppComponent,
     NavMenuComponent,
-    HomeComponent,
-    FacebookLoginComponent
+    HomeComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpModule,
     HttpClientModule,
     FormsModule,
+    AuthModule,
     EventsModule,
     ReportsModule,
     AppRoutingModule
