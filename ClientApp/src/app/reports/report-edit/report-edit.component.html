@@ -15,7 +15,7 @@
 
   <div class="form-group">
     <label>Content</label>
-    <textarea name="content" [(ngModel)]="report.content" class="form-control"></textarea>
+    <simplemde name="simplemde" [(ngModel)]="report.content"></simplemde>
   </div>
 
   <button type="submit" class="btn btn-primary">Save</button>

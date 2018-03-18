@@ -6,6 +6,9 @@ import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
+// external
+import { SimplemdeModule, SIMPLEMDE_CONFIG } from 'ng2-simplemde'
+
 // components
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -29,6 +32,10 @@ import { AppRoutingModule } from './app-routing.module';
     HttpModule,
     HttpClientModule,
     FormsModule,
+    SimplemdeModule.forRoot({
+      provide: SIMPLEMDE_CONFIG,
+      useValue: {placeholder: "Report goes here"}
+    }),
     AuthModule,
     EventsModule,
     ReportsModule,
