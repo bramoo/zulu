@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Route, RouterModule } from '@angular/router';
 
+import { MarkdownModule } from 'ngx-markdown';
 import { SimplemdeModule } from 'ng2-simplemde'
 
 import { ReportCreateComponent } from './report-create/report-create.component';
@@ -27,6 +28,7 @@ const reportRoutes: Route[] = [
   imports: [
     CommonModule,
     FormsModule,
+    MarkdownModule,
     SimplemdeModule,
     RouterModule.forChild(reportRoutes)
   ],

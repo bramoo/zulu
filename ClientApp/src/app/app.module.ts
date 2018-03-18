@@ -7,6 +7,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 // external
+import { MarkdownModule } from 'ngx-markdown';
 import { SimplemdeModule, SIMPLEMDE_CONFIG } from 'ng2-simplemde'
 
 // components
@@ -32,6 +33,7 @@ import { AppRoutingModule } from './app-routing.module';
     HttpModule,
     HttpClientModule,
     FormsModule,
+    MarkdownModule.forRoot(),
     SimplemdeModule.forRoot({
       provide: SIMPLEMDE_CONFIG,
       useValue: {placeholder: "Report goes here"}
