@@ -15,7 +15,7 @@
     <dd>{{ report.title }}</dd>
 
     <dt>Content</dt>
-    <dd>{{ report.content }}</dd>
+    <dd markdown [data]="report.content | markdown"></dd>
 
     <dt>Author</dt>
     <dd>{{ report.author }}</dd>
