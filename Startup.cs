@@ -16,6 +16,7 @@ using zulu.Data;
 using zulu.Services;
 using zulu.ViewModels.Event;
 using zulu.ViewModels.Report;
+using Microsoft.AspNetCore.Mvc.Formatters;
 
 namespace zulu
 {
@@ -42,6 +43,7 @@ namespace zulu
         options.Audience = jwtAppSettingOptions[nameof(JwtIssuerOptions.Audience)];
         options.SigningCredentials = new SigningCredentials(jwtSigningKey, SecurityAlgorithms.HmacSha256);
       });
+      services.Configure<FacebookOptions>(Configuration.GetSection(nameof(FacebookOptions)));
 
       services.AddDbContext<AppDbContext>(options =>
           options.UseSqlite("Data Source=zulu.db"));
