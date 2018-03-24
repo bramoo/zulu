@@ -9,6 +9,7 @@ using zulu.Attributes;
 using zulu.Data;
 using zulu.Models;
 using zulu.ViewModels.Event;
+using zulu.ViewModels.Image;
 using zulu.ViewModels.Report;
 
 namespace zulu.Controllers
@@ -305,6 +306,47 @@ namespace zulu.Controllers
       }
 
       @event.EventReports.Remove(eventReport);
+      await DbContext.SaveChangesAsync();
+
+      return NoContent();
+    }
+
+
+    [HttpPost("{id:int}/images")]
+    public async Task<ActionResult> PostImage(int id, [FromBody]CreateImageViewModel model)
+    {
+      var @event = await DbContext.Events.SingleOrDefaultAsync(e => e.Id == id);
+      if (@event == null)
+      {
+        return NotFound();
+      }
+
+      var image = Mapper.Map<Image>(model);
+      @event.EventImages.Add(new EventImage { Image = image });
+      await DbContext.SaveChangesAsync();
+
+      // return Ok(new { Location = Url.Action("Get", "Image", new { id = image.Id })});
+      return CreatedAtRoute("GetImage", new { id = image.Id });
+    }
+
+
+    [HttpPost("{id:int}/images/{imageId:Guid}")]
+    public async Task<ActionResult> DeleteImage(int id, int imageId)
+    {
+      var @event = await DbContext.Events.Include(e => e.EventReports).SingleOrDefaultAsync(e => e.Id == id);
+      if (@event == null)
+      {
+        return NotFound();
+      }
+
+      var eventImage = @event.EventImages.SingleOrDefault(er => er.ImageId == imageId);
+      if (eventImage == null)
+      {
+        return NotFound();
+      }
+
+      eventImage.Image.Delete();
+      @event.EventImages.Remove(eventImage);
       await DbContext.SaveChangesAsync();
 
       return NoContent();

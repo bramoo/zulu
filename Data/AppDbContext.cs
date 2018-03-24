@@ -8,7 +8,7 @@ using zulu.Models;
 
 namespace zulu.Data
 {
-	public class AppDbContext : IdentityDbContext<AppUser>
+  public class AppDbContext : IdentityDbContext<AppUser>
   {
     public AppDbContext(DbContextOptions<AppDbContext> options)
         : base(options)
@@ -16,6 +16,8 @@ namespace zulu.Data
     }
 
 
+    public DbSet<ContentType> ContentTypes { get; set; }
+    public DbSet<Image> Images { get; set; }
     public DbSet<Event> Events { get; set; }
     public DbSet<Report> Reports { get; set; }
 
@@ -27,6 +29,13 @@ namespace zulu.Data
       modelBuilder.Entity<EventReport>().HasKey(er => new { er.EventId, er.ReportId });
       modelBuilder.Entity<EventReport>().HasOne(er => er.Event).WithMany(e => e.EventReports);
       modelBuilder.Entity<EventReport>().HasOne(er => er.Report).WithOne(r => r.EventReport);
+
+      modelBuilder.Entity<ContentType>().HasIndex(ct => ct.Name).IsUnique();
+      modelBuilder.Entity<Image>().HasOne(i => i.ContentType);
+
+      modelBuilder.Entity<EventImage>().HasKey(ei => new { ei.EventId, ei.ImageId });
+      modelBuilder.Entity<EventImage>().HasOne(ei => ei.Event).WithMany(e => e.EventImages);
+      // modelBuilder.Entity<EventImage>().HasOne(ei => ei.Image).WithOne(i => i.EventImage);
     }
 
     #region SaveChanges Overrides

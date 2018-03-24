@@ -12,7 +12,7 @@ namespace zulu.Models
     Deleted
   }
 
-  public class Entity
+  public abstract class Entity
   {
     public Entity()
     {

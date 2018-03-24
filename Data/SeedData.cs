@@ -4,11 +4,21 @@ using zulu.Models;
 
 namespace zulu.Data
 {
-	public class SeedData
+  public class SeedData
   {
     internal static void Initialize(IServiceProvider services)
     {
       var dbContext = (AppDbContext)services.GetService(typeof(AppDbContext));
+
+      if (!dbContext.ContentTypes.Any())
+      {
+        dbContext.ContentTypes.Add(new ContentType { Name = "image/jpeg" });
+        dbContext.ContentTypes.Add(new ContentType { Name = "image/png" });
+        dbContext.ContentTypes.Add(new ContentType { Name = "image/gif" });
+
+        //TODO: should probably add more content types.
+      }
+
 
       if (!dbContext.Reports.Any())
       {

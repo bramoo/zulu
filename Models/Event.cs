@@ -5,10 +5,11 @@ using System.Linq;
 
 namespace zulu.Models
 {
-	public class Event : Entity
+  public class Event : Entity
   {
     public Event()
     {
+      EventImages = new List<EventImage>();
       EventReports = new List<EventReport>();
     }
 
@@ -18,6 +19,7 @@ namespace zulu.Models
     public DateTime End { get; set; }
 
     public ICollection<EventReport> EventReports { get; set; }
+    public ICollection<EventImage> EventImages { get; set; }
 
     [NotMapped]
     public IEnumerable<Report> Reports
@@ -25,6 +27,15 @@ namespace zulu.Models
       get
       {
         return EventReports?.Select(er => er.Report);
+      }
+    }
+
+    [NotMapped]
+    IEnumerable<Image> Images
+    {
+      get
+      {
+        return EventImages?.Select(ei => ei.Image);
       }
     }
   }

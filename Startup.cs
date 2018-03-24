@@ -17,6 +17,8 @@ using zulu.Services;
 using zulu.ViewModels.Event;
 using zulu.ViewModels.Report;
 using Microsoft.AspNetCore.Mvc.Formatters;
+using zulu.ViewModels.Image;
+using zulu.ViewModels.ValueResolvers;
 
 namespace zulu
 {
@@ -60,6 +62,8 @@ namespace zulu
 
       }).AddJwtBearer(configureOptions => ConfigureJwtBearerOptions(configureOptions, jwtAppSettingOptions, jwtSigningKey));
 
+      services.AddTransient<ContentTypeValueResolver>();
+
       services.AddAutoMapper(mapperConfig =>
       {
         mapperConfig.AddProfile<CreateEventViewModelProfile>();
@@ -69,6 +73,8 @@ namespace zulu
         mapperConfig.AddProfile<CreateReportViewModelProfile>();
         mapperConfig.AddProfile<EditReportViewModelProfile>();
         mapperConfig.AddProfile<ReportViewModelProfile>();
+
+        mapperConfig.AddProfile<CreateImageViewModelProfile>();
       });
 
       services.AddMvc(options =>
