@@ -80,8 +80,11 @@ namespace zulu.Controllers
     [HttpGet("{id:int}", Name = "GetEvent")]
     public async Task<IActionResult> Get(int id)
     {
+      //TODO: only get published reports/images if user is not authenticated.
+
       var @event = await DbContext.Events
-          .Include(e =>e.EventReports).ThenInclude(er => er.Report)
+          .Include(e => e.EventReports).ThenInclude(er => er.Report)
+          .Include(e => e.EventImages).ThenInclude(ei => ei.Image)
           .SingleOrDefaultAsync(e => e.Id == id);
 
       if (@event == null)
@@ -213,7 +216,7 @@ namespace zulu.Controllers
 
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> PutAsync(int id, [FromBody]EditEventViewModel model)
+    public async Task<IActionResult> Put(int id, [FromBody]EditEventViewModel model)
     {
       var @event = await DbContext.Events.SingleOrDefaultAsync(e => e.Id == id);
       if (@event == null)
@@ -330,7 +333,7 @@ namespace zulu.Controllers
     }
 
 
-    [HttpPost("{id:int}/images/{imageId:Guid}")]
+    [HttpPost("{id:int}/images/{imageId:int}")]
     public async Task<ActionResult> DeleteImage(int id, int imageId)
     {
       var @event = await DbContext.Events.Include(e => e.EventReports).SingleOrDefaultAsync(e => e.Id == id);

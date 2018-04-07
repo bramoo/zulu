@@ -9,7 +9,7 @@ using zulu.Data;
 
 namespace zulu.Controllers
 {
-  [Route("api/v1/events")]
+  [Route("api/v1/images")]
   [Authorize]
   public class ImageController : Controller
   {

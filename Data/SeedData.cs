@@ -20,6 +20,31 @@ namespace zulu.Data
       }
 
 
+      if (!dbContext.MemberRanks.Any())
+      {
+        dbContext.MemberRanks.Add(new MemberRank { Rank = "Squire" });
+        dbContext.MemberRanks.Add(new MemberRank { Rank = "Knight" });
+        dbContext.MemberRanks.Add(new MemberRank { Rank = "Associate" });
+        dbContext.MemberRanks.Add(new MemberRank { Rank = "Life" });
+      }
+
+
+      if (!dbContext.MemberRanks.Any())
+      {
+        dbContext.MemberPositions.Add(new MemberPosition { Name = "Crew Leader" });
+        dbContext.MemberPositions.Add(new MemberPosition { Name = "Assistant Crew Leader" });
+        dbContext.MemberPositions.Add(new MemberPosition { Name = "Treasurer" });
+        dbContext.MemberPositions.Add(new MemberPosition { Name = "Secretary" });
+        dbContext.MemberPositions.Add(new MemberPosition { Name = "Youth Liaison" });
+        dbContext.MemberPositions.Add(new MemberPosition { Name = "Trading Manager" });
+        dbContext.MemberPositions.Add(new MemberPosition { Name = "Master of Ceremonies" });
+        dbContext.MemberPositions.Add(new MemberPosition { Name = "Mascot" });
+        dbContext.MemberPositions.Add(new MemberPosition { Name = "Trapline Manager" });
+        dbContext.MemberPositions.Add(new MemberPosition { Name = "Quatermaster" });
+        dbContext.MemberPositions.Add(new MemberPosition { Name = "Sheriff" });
+      }
+
+
       if (!dbContext.Reports.Any())
       {
         dbContext.Reports.Add(new Report { Title = "Report One", Content = "Test report for report one." });

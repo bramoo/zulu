@@ -16,7 +16,7 @@ namespace zulu.ViewModels.Image
 
   public class CreateImageViewModelValidator : AbstractValidator<CreateImageViewModel>
   {
-    private static IList<string> ValidImageContentTypes = new List<string> { "image/jpeg", "image/png", "iimage/gif" };
+    private static IList<string> ValidImageContentTypes = new List<string> { "image/jpeg", "image/png", "image/gif" };
     // RuleFor(x => x.Parameter).Must(x => Conditions.Contains(x)).WithMessage("Please only use: " + String.Join(",", Conditions);
 
     public CreateImageViewModelValidator()
