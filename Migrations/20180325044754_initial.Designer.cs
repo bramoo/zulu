@@ -12,8 +12,8 @@ using zulu.Models;
 namespace zulu.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20180324221915_images")]
-    partial class images
+    [Migration("20180325044754_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -147,6 +147,8 @@ namespace zulu.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd");
 
+                    b.Property<int?>("MemberId");
+
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256);
 
@@ -167,6 +169,8 @@ namespace zulu.Migrations
                         .HasMaxLength(256);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MemberId");
 
                     b.HasIndex("NormalizedEmail")
                         .HasName("EmailIndex");
@@ -268,6 +272,81 @@ namespace zulu.Migrations
                     b.ToTable("Images");
                 });
 
+            modelBuilder.Entity("zulu.Models.Member", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Alias");
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<DateTime?>("DateOfBirth");
+
+                    b.Property<string>("Email");
+
+                    b.Property<string>("FirstName");
+
+                    b.Property<DateTime?>("Invested");
+
+                    b.Property<DateTime?>("Joined");
+
+                    b.Property<DateTime?>("Left");
+
+                    b.Property<DateTime>("Modified");
+
+                    b.Property<int?>("Positionid");
+
+                    b.Property<int?>("RankId");
+
+                    b.Property<int>("State");
+
+                    b.Property<string>("Surname");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Email")
+                        .IsUnique();
+
+                    b.HasIndex("Positionid");
+
+                    b.HasIndex("RankId");
+
+                    b.HasIndex("Alias", "Surname", "FirstName");
+
+                    b.ToTable("Members");
+                });
+
+            modelBuilder.Entity("zulu.Models.MemberPosition", b =>
+                {
+                    b.Property<int>("id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("id");
+
+                    b.HasIndex("Name")
+                        .IsUnique();
+
+                    b.ToTable("MemberPositions");
+                });
+
+            modelBuilder.Entity("zulu.Models.MemberRank", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Rank");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Rank")
+                        .IsUnique();
+
+                    b.ToTable("MemberRanks");
+                });
+
             modelBuilder.Entity("zulu.Models.Report", b =>
                 {
                     b.Property<int>("Id")
@@ -335,6 +414,13 @@ namespace zulu.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
+            modelBuilder.Entity("zulu.Data.AppUser", b =>
+                {
+                    b.HasOne("zulu.Models.Member", "Member")
+                        .WithMany()
+                        .HasForeignKey("MemberId");
+                });
+
             modelBuilder.Entity("zulu.Models.EventImage", b =>
                 {
                     b.HasOne("zulu.Models.Event", "Event")
@@ -366,6 +452,17 @@ namespace zulu.Migrations
                     b.HasOne("zulu.Models.ContentType", "ContentType")
                         .WithMany()
                         .HasForeignKey("ContentTypeId");
+                });
+
+            modelBuilder.Entity("zulu.Models.Member", b =>
+                {
+                    b.HasOne("zulu.Models.MemberPosition", "Position")
+                        .WithMany()
+                        .HasForeignKey("Positionid");
+
+                    b.HasOne("zulu.Models.MemberRank", "Rank")
+                        .WithMany()
+                        .HasForeignKey("RankId");
                 });
 #pragma warning restore 612, 618
         }

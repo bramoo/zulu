@@ -29,7 +29,7 @@ namespace zulu.ViewModels.Event
       RuleFor(e => e.Id).NotEmpty();
       RuleFor(e => e.Name).NotEmpty();
       RuleFor(e => e.Start).NotEmpty();
-      RuleFor(e => e.End).NotEmpty().GreaterThan(e => e.Start).WithMessage("'End' must be greater than 'Start'");
+      RuleFor(e => e.End).NotEmpty().GreaterThan(e => e.Start).WithMessage("'End' must be after 'Start'");
 
       RuleFor(e => e.Reports).SetCollectionValidator(new ListReportViewModelValidator());
     }

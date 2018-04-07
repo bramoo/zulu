@@ -19,6 +19,7 @@ using zulu.ViewModels.Report;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using zulu.ViewModels.Image;
 using zulu.ViewModels.ValueResolvers;
+using zulu.ViewModels.Member;
 
 namespace zulu
 {
@@ -75,6 +76,10 @@ namespace zulu
         mapperConfig.AddProfile<ReportViewModelProfile>();
 
         mapperConfig.AddProfile<CreateImageViewModelProfile>();
+
+        mapperConfig.AddProfile<CreateMemberViewModelProfile>();
+        mapperConfig.AddProfile<EditMemberViewModelProfile>();
+        mapperConfig.AddProfile<MemberViewModelProfile>();
       });
 
       services.AddMvc(options =>
