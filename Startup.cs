@@ -71,6 +71,8 @@ namespace zulu
         mapperConfig.AddProfile<EditEventViewModelProfile>();
         mapperConfig.AddProfile<EventViewModelProfile>();
 
+        mapperConfig.AddProfile<ListImageViewModelProfile>();
+
         mapperConfig.AddProfile<CreateReportViewModelProfile>();
         mapperConfig.AddProfile<EditReportViewModelProfile>();
         mapperConfig.AddProfile<ReportViewModelProfile>();

@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from "@angular/router";
 
+import { Event, EventsService } from "../../events/events.service";
 import { Report, ReportsService } from '../reports.service';
 
 @Component({
@@ -8,22 +10,34 @@ import { Report, ReportsService } from '../reports.service';
   styleUrls: ['./report-create.component.css']
 })
 export class ReportCreateComponent {
-  public report: Report;
+  public event: number;
+  public events: Event[];
+  public report = new Report();
 
-  constructor(private service: ReportsService) {
-    this.report = {
-      id: 0,
-      title: "",
-      author: "",
-      content: "",
-      created: new Date(0),
-      modified: new Date(0),
-      state: 0
-    };
+  constructor(
+    private route: ActivatedRoute,
+    private reportService: ReportsService,
+    private eventService: EventsService
+  ) { }
+
+  ngOnInit() {
+    let params = this.route.snapshot.paramMap;
+
+    if (params.has("event")) {
+      this.event = +params.get("event");
+    }
+
+    this.eventService.getEvents().subscribe(events => this.events = events);
   }
 
   submit() {
-    this.service.createReport(this.report)
-      .subscribe(ok => alert("Created"), error => alert("Failed"));
+    if (this.event) {
+      this.eventService.createReport(this.event, this.report)
+        .subscribe(ok => alert("Created"), error => alert("Failed"));
+    }
+    else {
+      this.reportService.createReport(this.report)
+        .subscribe(ok => alert("Created"), error => alert("Failed"));
+    }
   }
 }
