@@ -2,6 +2,7 @@ using AutoMapper;
 using FluentValidation;
 using System;
 using System.Collections.Generic;
+using zulu.ViewModels.Image;
 using zulu.ViewModels.Report;
 
 namespace zulu.ViewModels.Event
@@ -19,6 +20,7 @@ namespace zulu.ViewModels.Event
     public DateTime End { get; set; }
 
     public IEnumerable<ListReportViewModel> Reports { get; set; }
+    public IEnumerable<ListImageViewModel> Images { get; set; }
   }
 
 

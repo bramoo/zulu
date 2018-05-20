@@ -25,5 +25,4 @@ export class EventDetailsComponent implements OnInit {
       .switchMap(id => this.service.getEvent(id))
       .subscribe(event => this.event = event);
   }
-
 }

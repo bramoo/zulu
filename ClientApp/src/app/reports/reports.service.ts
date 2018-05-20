@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-import { Http, Response } from '@angular/http';
+import { Response } from '@angular/http';
+import { AuthHttp } from "angular2-jwt";
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -9,7 +10,7 @@ export class ReportsService {
 
   constructor(
     @Inject("BASE_URL") private baseurl: string,
-    private http: Http
+    private http: AuthHttp
   ) { }
 
   public getReports(): Observable<Report[]> {
@@ -39,7 +40,7 @@ export class ReportsService {
 }
 
 
-export interface Report {
+export class Report {
   id: number;
   title: string;
   content: string;

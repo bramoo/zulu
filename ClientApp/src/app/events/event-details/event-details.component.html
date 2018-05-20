@@ -25,6 +25,13 @@
 
     <dt>Deleted</dt>
     <dd>{{ event.deleted }}</dd>
+
+    <dt>Reports</dt>
+    <dd>
+      <a *ngFor="let report of event.reports" class="d-block" [routerLink]="['/reports', report.id]">{{ report.title }}</a>
+
+      <a class="btn btn-secondary" [routerLink]="['/reports/create', {event: event.id}]">Add new report</a>
+    </dd>
   </dl>
 
   <image-upload [eventid]="event.id"></image-upload>

@@ -5,6 +5,8 @@ import { AuthHttp } from "angular2-jwt";
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
+import { Report } from "../reports/reports.service";
+
 @Injectable()
 export class EventsService {
 
@@ -23,13 +25,18 @@ export class EventsService {
       .map(response => response.json() as Event);
   }
 
-  public createEvent(report: Event): Observable<boolean> {
-    return this.http.post(this.baseurl + 'api/v1/events', report)
+  public createEvent(event: Event): Observable<boolean> {
+    return this.http.post(this.baseurl + 'api/v1/events', event)
       .map(response => response.ok);
   }
 
-  public editEvent(report: Event): Observable<boolean> {
-    return this.http.put(this.baseurl + 'api/v1/events/' + report.id.toString(), report)
+  public editEvent(event: Event): Observable<boolean> {
+    return this.http.put(this.baseurl + 'api/v1/events/' + event.id.toString(), event)
+      .map(response => response.ok);
+  }
+
+  public createReport(id: number, report: Report) {
+    return this.http.post(this.baseurl + "api/v1/events/" + id + "/reports", report)
       .map(response => response.ok);
   }
 

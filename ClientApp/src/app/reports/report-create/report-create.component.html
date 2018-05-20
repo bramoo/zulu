@@ -2,6 +2,17 @@
 
 <form (submit)="submit()">
   <div class="form-group">
+    <label for="event">Event</label>
+    <select *ngIf="!events" class="form-control" disabled>
+      <option>Loading ...</option>
+    </select>
+
+    <select *ngIf="events" id="event" name="event" [(ngModel)]="event" class="form-control">
+      <option *ngFor="let event of events" [value]="event.id">{{ event.name }}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
     <label for="title">Title</label>
     <input id="title" name="title" [(ngModel)]="report.title" class="form-control" />
   </div>
