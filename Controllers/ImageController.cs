@@ -48,10 +48,15 @@ namespace zulu.Controllers
       image.ContentType = await DbContext.ContentTypes.SingleAsync(ct => ct.Name == Request.ContentType);
 
       var path = Path.Combine(HostingEnvironment.WebRootPath, ImageDir);
+
+      if (!Directory.Exists(path))
+      {
+        Directory.CreateDirectory(path);
+      }
+
       var filePath = Path.Combine(path, image.FileName);
 
       await Request.Body.CopyToAsync(new FileStream(filePath, FileMode.Create));
-      var fs = new FileStream(filePath, FileMode.Open);
 
       DbContext.SaveChanges();
 

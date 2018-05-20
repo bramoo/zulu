@@ -1,0 +1,5 @@
+<div>
+  <label for="imageUpload">Upload Image</label>
+  <input id="imageUpload" type="file" (change)="imageChanged($event)" />
+  <button class="btn btn-secondary" (click)="uploadImage()" [disabled]="!file || !eventid">Upload</button>
+</div>

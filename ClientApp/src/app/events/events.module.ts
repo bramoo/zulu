@@ -11,13 +11,15 @@ import { EventDetailsComponent } from './event-details/event-details.component';
 
 import { EventsService } from './events.service';
 
+import { ImageUploadComponent } from '../image-upload/image-upload.component';
+
 const eventRoutes: Route[] = [
   {
-    path: 'events', canActivate:[AuthGuard], children: [
+    path: 'events', canActivate: [AuthGuard], children: [
       { path: '', component: EventListComponent },
       { path: 'create', component: EventCreateComponent },
       { path: ':eventid', component: EventDetailsComponent },
-      { path: ':eventid/edit', component: EventEditComponent}
+      { path: ':eventid/edit', component: EventEditComponent }
     ]
   }
 ];
@@ -35,7 +37,8 @@ const eventRoutes: Route[] = [
     EventListComponent,
     EventCreateComponent,
     EventEditComponent,
-    EventDetailsComponent
+    EventDetailsComponent,
+    ImageUploadComponent
   ],
   providers: [
     EventsService
