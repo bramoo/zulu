@@ -31,7 +31,7 @@ namespace zulu.Models
     }
 
     [NotMapped]
-    IEnumerable<Image> Images
+    public IEnumerable<Image> Images
     {
       get
       {
