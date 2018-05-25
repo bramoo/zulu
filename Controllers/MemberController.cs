@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -6,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using zulu.Data;
 using zulu.Models;
-using zulu.ViewModels.Member;
+using zulu.ViewModels;
+using zulu.ViewModels.Mapper;
+
 
 namespace zulu.Controllers
 {
@@ -15,7 +18,7 @@ namespace zulu.Controllers
   [Authorize]
   public class MemberController : Controller
   {
-    public MemberController(AppDbContext dbContext, IMapper mapper)
+    public MemberController(AppDbContext dbContext, MemberMapper mapper)
     {
       DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
       Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -23,7 +26,46 @@ namespace zulu.Controllers
 
 
     private AppDbContext DbContext { get; }
-    private IMapper Mapper { get; }
+    private MemberMapper Mapper { get; }
+
+
+    [HttpGet]
+    public async Task<IActionResult> List()
+    {
+      return await ListUndeleted();
+    }
+
+
+    private async Task<IActionResult> ListUndeleted()
+    {
+      var members = await DbContext.Members.Where(e => e.State != Models.EntityState.Deleted).Select(e => Mapper.Map(e)).ToListAsync();
+      return Ok(members);
+    }
+
+
+    [HttpGet("draft")]
+    public async Task<IActionResult> ListDraft()
+    {
+      var events = await DbContext.Members.Where(e => e.State == Models.EntityState.Draft).Select(e => Mapper.Map(e)).ToListAsync();
+      return Ok(events);
+    }
+
+
+    [HttpGet("published")]
+    public async Task<IActionResult> ListPublished()
+    {
+      var members = await DbContext.Members.Where(e => e.State == Models.EntityState.Published).Select(e => Mapper.Map(e)).ToListAsync();
+      return Ok(members);
+    }
+
+
+    [HttpGet("deleted")]
+    public async Task<IActionResult> ListDeleted()
+    {
+      var members = await DbContext.Members.Where(e => e.State == Models.EntityState.Deleted).Select(e => Mapper.Map(e)).ToListAsync();
+      return Ok(members);
+    }
+
 
 
     [HttpGet("{id:int}", Name = "GetMember")]
@@ -38,23 +80,23 @@ namespace zulu.Controllers
         return NotFound();
       }
 
-      return Ok(Mapper.Map<MemberViewModel>(member));
+      return Ok(Mapper.Map(member));
     }
 
 
     [HttpPost("")]
-    public async Task<ActionResult> Post([FromBody]CreateMemberViewModel model)
+    public async Task<ActionResult> Post([FromBody]MemberViewModel model)
     {
-      var member = Mapper.Map<Member>(model);
+      var member = Mapper.Update(new Member(), model);
 
       await DbContext.Members.AddAsync(member);
       await DbContext.SaveChangesAsync();
-      return CreatedAtRoute("GetMember", new { member.Id }, Mapper.Map<MemberViewModel>(member));
+      return CreatedAtRoute("GetMember", new { member.Id }, Mapper.Map(member));
     }
 
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Put(int id, [FromBody]EditMemberViewModel model)
+    public async Task<IActionResult> Put(int id, [FromBody]MemberViewModel model)
     {
       var member = await DbContext.Members.SingleOrDefaultAsync(m => m.Id == id);
       if (member == null)
@@ -62,11 +104,11 @@ namespace zulu.Controllers
         return NotFound();
       }
 
-      Mapper.Map(model, member);
+      Mapper.Update(member, model);
 
       await DbContext.SaveChangesAsync();
 
-      return Ok(Mapper.Map<MemberViewModel>(member));
+      return Ok(Mapper.Map(member));
     }
 
   }

@@ -1,4 +1,3 @@
-using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -14,12 +13,9 @@ using System.Text;
 using zulu.Attributes;
 using zulu.Data;
 using zulu.Services;
-using zulu.ViewModels.Event;
-using zulu.ViewModels.Report;
 using Microsoft.AspNetCore.Mvc.Formatters;
-using zulu.ViewModels.Image;
-using zulu.ViewModels.ValueResolvers;
-using zulu.ViewModels.Member;
+using System.Collections.Generic;
+using zulu.ViewModels.Mapper;
 
 namespace zulu
 {
@@ -55,6 +51,8 @@ namespace zulu
           .AddEntityFrameworkStores<AppDbContext>();
 
       services.AddScoped<IJwtService, JwtService>();
+      
+      RegisterMappers(services);
 
       services.AddAuthentication(options =>
       {
@@ -62,27 +60,6 @@ namespace zulu
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
       }).AddJwtBearer(configureOptions => ConfigureJwtBearerOptions(configureOptions, jwtAppSettingOptions, jwtSigningKey));
-
-      services.AddTransient<ContentTypeValueResolver>();
-
-      services.AddAutoMapper(mapperConfig =>
-      {
-        mapperConfig.AddProfile<CreateEventViewModelProfile>();
-        mapperConfig.AddProfile<EditEventViewModelProfile>();
-        mapperConfig.AddProfile<EventViewModelProfile>();
-
-        mapperConfig.AddProfile<ListImageViewModelProfile>();
-
-        mapperConfig.AddProfile<CreateReportViewModelProfile>();
-        mapperConfig.AddProfile<EditReportViewModelProfile>();
-        mapperConfig.AddProfile<ReportViewModelProfile>();
-
-        mapperConfig.AddProfile<CreateImageViewModelProfile>();
-
-        mapperConfig.AddProfile<CreateMemberViewModelProfile>();
-        mapperConfig.AddProfile<EditMemberViewModelProfile>();
-        mapperConfig.AddProfile<MemberViewModelProfile>();
-      });
 
       services.AddMvc(options =>
       {
@@ -94,6 +71,19 @@ namespace zulu
       {
         configuration.RootPath = "ClientApp/dist";
       });
+    }
+
+    private static void RegisterMappers(IServiceCollection services)
+    {
+      services.AddScoped<IMapper<Models.Member, ViewModels.MemberViewModel>, MemberMapper>();
+      services.AddScoped<MemberMapper>();
+      services.AddScoped<IMapper<Models.Report, ViewModels.ReportViewModel>, ReportMapper>();
+      services.AddScoped<ReportMapper>();
+      services.AddScoped<IMapper<Models.Image, ViewModels.ImageDescriptionViewModel>, ImageDescriptionMapper>();
+      services.AddScoped<ImageDescriptionMapper>();
+      services.AddScoped<IMapper<Models.Event, ViewModels.EventViewModel>, EventMapper>();
+      services.AddScoped<IMapper<Models.Event, ViewModels.FullEventViewModel>, EventMapper>();
+      services.AddScoped<EventMapper>();
     }
 
 
@@ -147,7 +137,6 @@ namespace zulu
         ValidateLifetime = true,
         ClockSkew = TimeSpan.Zero
       };
-
 
       jwtBearerOptions.ClaimsIssuer = jwtAppSettingOptions[nameof(JwtIssuerOptions.Issuer)];
       jwtBearerOptions.TokenValidationParameters = tokenValidationParameters;

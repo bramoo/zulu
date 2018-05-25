@@ -1,9 +1,14 @@
 using System;
+using System.Collections.Generic;
 
 namespace zulu.Models
 {
   public class Member : Entity
   {
+    public Member()
+    {
+    }
+
     public string FirstName { get; set; }
     public string Surname { get; set; }
     public string Alias { get; set; }

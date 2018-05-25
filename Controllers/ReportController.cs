@@ -7,7 +7,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using zulu.Data;
 using zulu.Models;
-using zulu.ViewModels.Report;
+using zulu.ViewModels;
+using zulu.ViewModels.Mapper;
 
 namespace zulu.Controllers
 {
@@ -16,7 +17,7 @@ namespace zulu.Controllers
   [Authorize]
   public class ReportController : Controller
   {
-    public ReportController(AppDbContext dbContext, IMapper mapper)
+    public ReportController(AppDbContext dbContext, ReportMapper mapper)
     {
       DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
       Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
@@ -24,7 +25,7 @@ namespace zulu.Controllers
 
 
     private AppDbContext DbContext { get; }
-    private IMapper Mapper { get; }
+    private ReportMapper Mapper { get; }
 
 
     [AllowAnonymous]
@@ -44,7 +45,7 @@ namespace zulu.Controllers
 
     private async Task<IActionResult> ListUndeleted()
     {
-      var reports = await DbContext.Reports.Where(r => r.State != Models.EntityState.Deleted).Select(r => Mapper.Map<ListReportViewModel>(r)).ToListAsync();
+      var reports = await DbContext.Reports.Where(r => r.State != Models.EntityState.Deleted).Select(r => Mapper.Map(r)).ToListAsync();
       return Ok(reports);
     }
 
@@ -52,7 +53,7 @@ namespace zulu.Controllers
     [HttpGet("draft")]
     public async Task<IActionResult> ListDraft()
     {
-      var reports = await DbContext.Reports.Where(r => r.State == Models.EntityState.Draft).Select(r => Mapper.Map<ListReportViewModel>(r)).ToListAsync();
+      var reports = await DbContext.Reports.Where(r => r.State == Models.EntityState.Draft).Select(r => Mapper.Map(r)).ToListAsync();
       return Ok(reports);
     }
 
@@ -60,7 +61,7 @@ namespace zulu.Controllers
     [HttpGet("published")]
     public async Task<IActionResult> ListPublished()
     {
-      var reports = await DbContext.Reports.Where(r => r.State == Models.EntityState.Published).Select(r => Mapper.Map<ListReportViewModel>(r)).ToListAsync();
+      var reports = await DbContext.Reports.Where(r => r.State == Models.EntityState.Published).Select(r => Mapper.Map(r)).ToListAsync();
       return Ok(reports);
     }
 
@@ -68,7 +69,7 @@ namespace zulu.Controllers
     [HttpGet("deleted")]
     public async Task<IActionResult> ListDeleted()
     {
-      var reports = await DbContext.Reports.Where(r => r.State == Models.EntityState.Deleted).Select(r => Mapper.Map<ListReportViewModel>(r)).ToListAsync();
+      var reports = await DbContext.Reports.Where(r => r.State == Models.EntityState.Deleted).Select(r => Mapper.Map(r)).ToListAsync();
       return Ok(reports);
     }
 
@@ -84,7 +85,7 @@ namespace zulu.Controllers
 
       if (User.Identity.IsAuthenticated || report.State == Models.EntityState.Published)
       {
-        return Ok(Mapper.Map<ReportViewModel>(report));
+        return Ok(Mapper.Map(report));
       }
 
       return Unauthorized();
@@ -130,7 +131,7 @@ namespace zulu.Controllers
 
 
     [HttpPost("published")]
-    public async Task<IActionResult> Publish([FromBody]EditReportViewModel model)
+    public async Task<IActionResult> Publish([FromBody]ReportViewModel model)
     {
       if (model.Id > 0)
       {
@@ -161,12 +162,12 @@ namespace zulu.Controllers
           return BadRequest(ModelState);
         }
 
-        var report = Mapper.Map<Report>(model);
+        var report = Mapper.Update(new Report(), model);
         if (report.Publish())
         {
           await DbContext.Reports.AddAsync(report);
           await DbContext.SaveChangesAsync();
-          return CreatedAtRoute("GetReport", new { report.Id }, Mapper.Map<ReportViewModel>(report));
+          return CreatedAtRoute("GetReport", new { report.Id }, Mapper.Map(report));
         }
       }
 
@@ -194,18 +195,18 @@ namespace zulu.Controllers
 
 
     [HttpPost("")]
-    public async Task<IActionResult> Post([FromBody]CreateReportViewModel model)
+    public async Task<IActionResult> Post([FromBody]ReportViewModel model)
     {
-      var report = Mapper.Map<Report>(model);
+      var report = Mapper.Update(new Report(), model);
 
       await DbContext.Reports.AddAsync(report);
       await DbContext.SaveChangesAsync();
-      return CreatedAtRoute("GetReport", new { report.Id }, Mapper.Map<ReportViewModel>(report));
+      return CreatedAtRoute("GetReport", new { report.Id }, Mapper.Map(report));
     }
 
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Put(int id, [FromBody]EditReportViewModel model)
+    public async Task<IActionResult> Put(int id, [FromBody]ReportViewModel model)
     {
       var report = await DbContext.Reports.SingleOrDefaultAsync(e => e.Id == id);
       if (report == null)
@@ -213,11 +214,11 @@ namespace zulu.Controllers
         return NotFound();
       }
 
-      Mapper.Map(model, report);
+      Mapper.Update(report, model);
 
       await DbContext.SaveChangesAsync();
 
-      return Ok(Mapper.Map<ReportViewModel>(report));
+      return Ok(Mapper.Map(report));
     }
   }
 }

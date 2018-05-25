@@ -45,6 +45,13 @@ namespace zulu.Data
       }
 
 
+      if(!dbContext.Members.Any()){
+        dbContext.Members.Add(new Member { FirstName = "Andrew", Surname = "Brown",  Alias = "Punga", Email = "andrew@ontempo.co.nz" });
+        dbContext.Members.Add(new Member { FirstName = "Bradley", Surname = "Moorfield",  Alias = "Brad", Email = "brad@email.com" });
+        dbContext.Members.Add(new Member { FirstName = "Vanessa", Surname = "Irvine",  Alias = "Ness", Email = "vanessa@email.com" });
+      }
+
+
       if (!dbContext.Reports.Any())
       {
         dbContext.Reports.Add(new Report { Title = "Report One", Content = "Test report for report one." });
