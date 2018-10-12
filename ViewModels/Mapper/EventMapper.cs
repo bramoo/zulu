@@ -8,15 +8,19 @@ namespace zulu.ViewModels.Mapper
       IMapper<Models.Event, EventViewModel>,
       IMapper<Models.Event, FullEventViewModel>
   {
-    public EventMapper(ReportMapper reportMapper, ImageDescriptionMapper imageMapper)
+    public EventMapper(EventAttendanceMapper attendanceMapper, ReportMapper reportMapper, ImageDescriptionMapper imageMapper)
     {
+      AttendanceMapper = attendanceMapper ?? throw new ArgumentNullException(nameof(attendanceMapper));
       ReportMapper = reportMapper ?? throw new ArgumentNullException(nameof(reportMapper));
       ImageMapper = imageMapper ?? throw new ArgumentNullException(nameof(imageMapper));
     }
 
 
     private ReportMapper ReportMapper { get; }
+
     private ImageDescriptionMapper ImageMapper { get; }
+
+    private EventAttendanceMapper AttendanceMapper { get; }
 
     public EventViewModel Map(Event src)
     {
@@ -49,10 +53,9 @@ namespace zulu.ViewModels.Mapper
         Start = src.Start,
         End = src.End,
 
-        // Attendance = ,
+        Attendance = src.Attendance.Select(a => AttendanceMapper.Map(a)),
         Reports = src.Reports.Select(r => ReportMapper.Map(r)),
         Images = src.Images.Select(i => ImageMapper.Map(i)),
-        // Images = ,
       };
     }
 

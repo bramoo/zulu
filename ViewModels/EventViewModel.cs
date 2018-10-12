@@ -15,7 +15,7 @@ namespace zulu.ViewModels
 
   public class FullEventViewModel : EventViewModel
   {
-    // public IEnumerable<AttendanceViewModel> Attendance { get; set; }
+    public IEnumerable<EventAttendanceViewModel> Attendance { get; set; }
     public IEnumerable<ReportViewModel> Reports { get; set; }
     public IEnumerable<ImageDescriptionViewModel> Images { get; set; }
   }

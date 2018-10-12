@@ -81,6 +81,10 @@ namespace zulu
       services.AddScoped<ReportMapper>();
       services.AddScoped<IMapper<Models.Image, ViewModels.ImageDescriptionViewModel>, ImageDescriptionMapper>();
       services.AddScoped<ImageDescriptionMapper>();
+      services.AddScoped<IMapper<Models.EventAttendance, ViewModels.EventAttendanceViewModel>, EventAttendanceMapper>();
+      services.AddScoped<EventAttendanceMapper>();
+      services.AddScoped<IMapper<Models.EventAttendance, ViewModels.MemberAttendanceViewModel>, MemberAttendanceMapper>();
+      services.AddScoped<MemberAttendanceMapper>();
       services.AddScoped<IMapper<Models.Event, ViewModels.EventViewModel>, EventMapper>();
       services.AddScoped<IMapper<Models.Event, ViewModels.FullEventViewModel>, EventMapper>();
       services.AddScoped<EventMapper>();

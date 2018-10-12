@@ -7,6 +7,7 @@ namespace zulu.Models
   {
     public Member()
     {
+      Attendance = new List<EventAttendance>();
     }
 
     public string FirstName { get; set; }
@@ -22,5 +23,7 @@ namespace zulu.Models
     public DateTime? Joined { get; set; }
     public DateTime? Invested { get; set; }
     public DateTime? Left { get; set; }
+
+    public ICollection<EventAttendance> Attendance { get; set; }
   }
 }
