@@ -1,0 +1,23 @@
+<h1>Member</h1>
+
+<p *ngIf="!member">Loading &hellip;</p>
+
+<div *ngIf="member">
+  <div class="mb-3">
+    <a routerLink="edit" class="btn btn-primary">Edit</a>
+  </div>
+
+  <dl>
+    <dt>Id</dt>
+    <dd>{{ member.id }}</dd>
+
+    <dt>First Name</dt>
+    <dd>{{ member.firstName }}</dd>
+
+    <dt>Surame</dt>
+    <dd>{{ member.surname }}</dd>
+
+    <dt>Joined</dt>
+    <dd>{{ member.joined | date:"medium" }}</dd>
+  </dl>
+</div>

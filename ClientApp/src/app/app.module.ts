@@ -18,6 +18,7 @@ import { HomeComponent } from './home/home.component';
 // modules
 import { AuthModule } from './auth/auth.module';
 import { EventsModule } from './events/events.module';
+import { MemberModule } from './member/member.module';
 import { ReportsModule } from './reports/reports.module';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -40,6 +41,7 @@ import { AppRoutingModule } from './app-routing.module';
     }),
     AuthModule,
     EventsModule,
+    MemberModule,
     ReportsModule,
     AppRoutingModule
   ],
