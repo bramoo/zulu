@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +25,20 @@ namespace zulu.Controllers
 
     private AppDbContext DbContext { get; }
     private IMapper Mapper { get; }
+
+    
+    [HttpGet()]
+    public async Task<ActionResult> List()
+    {
+      var members = await DbContext.Members
+        .Where(m => m.State != Models.EntityState.Deleted)
+        .Include(m => m.Position)
+        .Include(m => m.Rank)
+        .Select(m => Mapper.Map<MemberViewModel>(m))
+        .ToListAsync();
+
+      return Ok(members);
+    }
 
 
     [HttpGet("{id:int}", Name = "GetMember")]
