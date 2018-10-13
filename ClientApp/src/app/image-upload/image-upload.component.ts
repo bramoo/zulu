@@ -1,4 +1,4 @@
-import { Component, Inject, Input, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Headers, Response } from "@angular/http";
 import { AuthHttp } from 'angular2-jwt';
 
@@ -9,6 +9,7 @@ import { AuthHttp } from 'angular2-jwt';
 })
 export class ImageUploadComponent implements OnInit {
   @Input() public eventid: string;
+  @Output() public uploaded = new EventEmitter<string>();
   public file: File;
 
   constructor(
@@ -57,6 +58,10 @@ export class ImageUploadComponent implements OnInit {
 
   putData(id: string, data: any, type: string) {
     let headers = new Headers({ "Content-Type": type });
-    this.http.put(this.baseUrl + "api/v1/images/" + id, data, { headers: headers }).subscribe();
+    this.http.put(this.baseUrl + "api/v1/images/" + id, data, { headers: headers }).subscribe(response => {
+      if (response.ok) {
+        this.uploaded.emit(id);
+      }
+    });
   }
 }

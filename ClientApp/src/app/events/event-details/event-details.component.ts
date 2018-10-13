@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 import 'rxjs/add/operator/filter';
@@ -15,6 +15,7 @@ export class EventDetailsComponent implements OnInit {
   public event: Event;
 
   constructor(
+    @Inject("BASE_URL") private baseurl: string,
     private route: ActivatedRoute,
     private service: EventsService
   ) { }
@@ -24,5 +25,19 @@ export class EventDetailsComponent implements OnInit {
       .map(params => +params.get("eventid"))
       .switchMap(id => this.service.getEvent(id))
       .subscribe(event => this.event = event);
+  }
+
+  public delete(image: any) {
+    this.service.deleteImage(image.id).subscribe(ok => {
+      if (ok) this.ngOnInit();
+    });
+  }
+
+  public imageUrl(id: any) {
+    return this.baseurl + 'api/v1/images/' + id;
+  }
+
+  public imageUploaded() {
+    this.ngOnInit();
   }
 }
