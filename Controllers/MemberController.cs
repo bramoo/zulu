@@ -29,20 +29,6 @@ namespace zulu.Controllers
     private MemberMapper Mapper { get; }
 
 
-    [HttpGet]
-    public async Task<IActionResult> List()
-    {
-      return await ListUndeleted();
-    }
-
-
-    private async Task<IActionResult> ListUndeleted()
-    {
-      var members = await DbContext.Members.Where(e => e.State != Models.EntityState.Deleted).Select(e => Mapper.Map(e)).ToListAsync();
-      return Ok(members);
-    }
-
-
     [HttpGet("draft")]
     public async Task<IActionResult> ListDraft()
     {
@@ -75,7 +61,7 @@ namespace zulu.Controllers
         .Where(m => m.State != Models.EntityState.Deleted)
         .Include(m => m.Position)
         .Include(m => m.Rank)
-        .Select(m => Mapper.Map<MemberViewModel>(m))
+        .Select(m => Mapper.Map(m))
         .ToListAsync();
 
       return Ok(members);

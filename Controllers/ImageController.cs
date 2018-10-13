@@ -33,9 +33,11 @@ namespace zulu.Controllers
 
       var path = Path.Combine(HostingEnvironment.WebRootPath, ImageDir);
       var filePath = Path.Combine(path, image.FileName);
-      var fs = new FileStream(filePath, FileMode.Open);
 
-      return new FileStreamResult(fs, image.ContentType.Name) { FileDownloadName = image.FileName };
+      using (var fs = new FileStream(filePath, FileMode.Open))
+      {
+        return new FileStreamResult(fs, image.ContentType.Name) { FileDownloadName = image.FileName };
+      }
     }
 
 
@@ -43,8 +45,8 @@ namespace zulu.Controllers
     public async Task<ActionResult> Put(int id)
     {
       var image = await DbContext.Images.FirstOrDefaultAsync(i => i.Id == id);
-      if(image == null) return NotFound();
-      
+      if (image == null) return NotFound();
+
       image.ContentType = await DbContext.ContentTypes.SingleAsync(ct => ct.Name == Request.ContentType);
 
       var path = Path.Combine(HostingEnvironment.WebRootPath, ImageDir);
@@ -54,9 +56,17 @@ namespace zulu.Controllers
         Directory.CreateDirectory(path);
       }
 
+      if (string.IsNullOrWhiteSpace(image.FileName))
+      {
+        image.FileName = Guid.NewGuid().ToString();
+      }
+
       var filePath = Path.Combine(path, image.FileName);
 
-      await Request.Body.CopyToAsync(new FileStream(filePath, FileMode.Create));
+      using (FileStream fs = new FileStream(filePath, FileMode.Create))
+      {
+        await Request.Body.CopyToAsync(fs);
+      }
 
       DbContext.SaveChanges();
 
