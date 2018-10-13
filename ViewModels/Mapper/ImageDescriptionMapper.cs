@@ -25,7 +25,7 @@ namespace zulu.ViewModels.Mapper
         Created = src.Created,
         LastModified = src.Modified,
 
-        DisplayName = src.FileName,
+        DisplayName = src.DisplayName,
         ContentType = src.ContentType.Name,
         Description = src.Description,
       };

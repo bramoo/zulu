@@ -11,14 +11,9 @@ export class EventCreateComponent {
   public event: Event;
 
   constructor(private service: EventsService) {
-    this.event = {
-      id: 0,
-      name: "",
-      start: new Date(Date.now()),
-      end: new Date(Date.now()),
-      allDay: false,
-      deleted: false
-    };
+    this.event = new Event();
+    this.event.start = new Date(Date.now());
+    this.event.end = new Date(Date.now());
   }
 
   submit() {

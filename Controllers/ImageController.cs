@@ -10,7 +10,7 @@ using zulu.Data;
 namespace zulu.Controllers
 {
   [Route("api/v1/images")]
-  [Authorize]
+  //[Authorize]
   public class ImageController : Controller
   {
     private const string ImageDir = "images";
@@ -29,19 +29,18 @@ namespace zulu.Controllers
     [HttpGet("{id:int}", Name = "GetImage")]
     public async Task<FileResult> Get(int id)
     {
-      var image = await DbContext.Images.FirstOrDefaultAsync(i => i.Id == id);
+      var image = await DbContext.Images.Include(i => i.ContentType).FirstOrDefaultAsync(i => i.Id == id);
 
       var path = Path.Combine(HostingEnvironment.WebRootPath, ImageDir);
       var filePath = Path.Combine(path, image.FileName);
 
-      using (var fs = new FileStream(filePath, FileMode.Open))
-      {
-        return new FileStreamResult(fs, image.ContentType.Name) { FileDownloadName = image.FileName };
-      }
+      var fs = new FileStream(filePath, FileMode.Open);
+      return new FileStreamResult(fs, image.ContentType.Name);
     }
 
 
     [HttpPut("{id:int}")]
+    [Authorize]
     public async Task<ActionResult> Put(int id)
     {
       var image = await DbContext.Images.FirstOrDefaultAsync(i => i.Id == id);
@@ -71,6 +70,13 @@ namespace zulu.Controllers
       DbContext.SaveChanges();
 
       return Ok();
+    }
+
+    [HttpDelete("{id:int}")]
+    [Authorize]
+    public async Task<ActionResult> Delete(int id)
+    {
+      throw new NotImplementedException();
     }
   }
 }

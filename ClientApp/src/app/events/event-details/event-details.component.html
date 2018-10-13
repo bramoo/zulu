@@ -32,7 +32,16 @@
 
       <a class="btn btn-secondary" [routerLink]="['/reports/create', {event: event.id}]">Add new report</a>
     </dd>
+
+    <dt>Images</dt>
+    <dd>
+      <figure *ngFor="let image of event.images">
+        <img [src]="imageUrl(image.id)">
+        <figcaption>{{ image.displayName }}</figcaption>
+        <input type="button" class="btn btn-danger" value="Delete" (click)="delete(image)" />
+      </figure>
+    </dd>
   </dl>
 
-  <image-upload [eventid]="event.id"></image-upload>
+  <image-upload [eventid]="event.id" (uploaded)="imageUploaded()"></image-upload>
 </div>

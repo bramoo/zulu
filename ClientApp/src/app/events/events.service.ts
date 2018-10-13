@@ -44,14 +44,20 @@ export class EventsService {
     return this.http.delete(this.baseurl + 'api/v1/events/' + id.toString())
       .map(response => response.ok);
   }
+
+  public deleteImage(id: any): Observable<boolean> {
+    return this.http.delete(this.baseurl + 'api/v1/images/' + id)
+      .map(response => response.ok);
+  }
 }
 
 
-export interface Event {
+export class Event {
   id: number;
   name: string;
   start: Date;
   end: Date;
   allDay: boolean;
   deleted: false;
+  images: any[];
 }
