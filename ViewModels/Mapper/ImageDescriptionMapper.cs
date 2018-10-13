@@ -25,7 +25,7 @@ namespace zulu.ViewModels.Mapper
         Created = src.Created,
         LastModified = src.Modified,
 
-        FileName = src.FileName,
+        DisplayName = src.FileName,
         ContentType = src.ContentType.Name,
         Description = src.Description,
       };
@@ -34,7 +34,7 @@ namespace zulu.ViewModels.Mapper
 
     public Models.Image Update(Models.Image dest, ImageDescriptionViewModel src)
     {
-      dest.FileName = src.FileName;
+      dest.DisplayName = src.DisplayName;
       dest.ContentType = ResolveContentType(src);
       dest.Description = src.Description;
 

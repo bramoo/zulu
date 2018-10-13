@@ -115,6 +115,7 @@ namespace zulu
         // see https://go.microsoft.com/fwlink/?linkid=864501
 
         spa.Options.SourcePath = "ClientApp";
+        spa.Options.StartupTimeout = TimeSpan.FromMinutes(2);
 
         if (env.IsDevelopment())
         {

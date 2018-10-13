@@ -6,7 +6,7 @@ namespace zulu.ViewModels
 {
   public class ImageDescriptionViewModel : EntityViewModel
   {
-    public string FileName { get; set; }
+    public string DisplayName { get; set; }
     public string ContentType { get; set; }
     public string Description { get; set; }
   }
@@ -19,7 +19,7 @@ namespace zulu.ViewModels
 
     public ImageDescriptionViewModelValidator()
     {
-      RuleFor(e => e.FileName).NotEmpty();
+      RuleFor(e => e.DisplayName).NotEmpty();
       RuleFor(e => e.ContentType).NotEmpty().Must(i => ValidImageContentTypes.Contains(i));
       // RuleFor(e => e.Description).NotEmpty();
     }

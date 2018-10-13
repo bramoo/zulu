@@ -35,7 +35,7 @@ export class ImageUploadComponent implements OnInit {
   uploadImage() {
     if (this.file) {
       let body = {
-        fileName: this.file.name,
+        displayName: this.file.name,
         contentType: this.file.type,
         description: "an image"
       };
