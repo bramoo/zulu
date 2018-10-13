@@ -9,6 +9,7 @@ namespace zulu.Models
   {
     public Event()
     {
+      Attendance = new List<EventAttendance>();
       EventImages = new List<EventImage>();
       EventReports = new List<EventReport>();
     }
@@ -18,8 +19,10 @@ namespace zulu.Models
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
 
+    public ICollection<EventAttendance> Attendance { get; set; }
     public ICollection<EventReport> EventReports { get; set; }
     public ICollection<EventImage> EventImages { get; set; }
+
 
     [NotMapped]
     public IEnumerable<Report> Reports

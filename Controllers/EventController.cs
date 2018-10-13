@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -8,9 +7,8 @@ using System.Threading.Tasks;
 using zulu.Attributes;
 using zulu.Data;
 using zulu.Models;
-using zulu.ViewModels.Event;
-using zulu.ViewModels.Image;
-using zulu.ViewModels.Report;
+using zulu.ViewModels;
+using zulu.ViewModels.Mapper;
 
 namespace zulu.Controllers
 {
@@ -19,15 +17,21 @@ namespace zulu.Controllers
   [Authorize]
   public class EventController : Controller
   {
-    public EventController(AppDbContext dbContext, IMapper mapper)
+    public EventController(AppDbContext dbContext, EventMapper eventMapper, ReportMapper reportMapper, ImageDescriptionMapper imageDescriptionMapper, IMapper<EventAttendance, EventAttendanceViewModel> attendanceMapper)
     {
       DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-      Mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+      EventMapper = eventMapper ?? throw new ArgumentNullException(nameof(eventMapper));
+      ReportMapper = reportMapper ?? throw new ArgumentNullException(nameof(reportMapper));
+      ImageDescriptionMapper = imageDescriptionMapper ?? throw new ArgumentNullException(nameof(imageDescriptionMapper));
+      AttendanceMapper = attendanceMapper ?? throw new ArgumentNullException(nameof(attendanceMapper));
     }
 
 
     private AppDbContext DbContext { get; }
-    private IMapper Mapper { get; }
+    private EventMapper EventMapper { get; }
+    private ReportMapper ReportMapper { get; }
+    private ImageDescriptionMapper ImageDescriptionMapper { get; }
+    private IMapper<EventAttendance, EventAttendanceViewModel> AttendanceMapper { get; }
 
 
     [AllowAnonymous]
@@ -47,7 +51,7 @@ namespace zulu.Controllers
 
     private async Task<IActionResult> ListUndeleted()
     {
-      var events = await DbContext.Events.Where(e => e.State != Models.EntityState.Deleted).Select(e => Mapper.Map<EventViewModel>(e)).ToListAsync();
+      var events = await DbContext.Events.Where(e => e.State != Models.EntityState.Deleted).Select(e => EventMapper.Map(e)).ToListAsync();
       return Ok(events);
     }
 
@@ -55,7 +59,7 @@ namespace zulu.Controllers
     [HttpGet("draft")]
     public async Task<IActionResult> ListDraft()
     {
-      var events = await DbContext.Events.Where(e => e.State == Models.EntityState.Draft).Select(e => Mapper.Map<EventViewModel>(e)).ToListAsync();
+      var events = await DbContext.Events.Where(e => e.State == Models.EntityState.Draft).Select(e => EventMapper.Map(e)).ToListAsync();
       return Ok(events);
     }
 
@@ -63,7 +67,7 @@ namespace zulu.Controllers
     [HttpGet("published")]
     public async Task<IActionResult> ListPublished()
     {
-      var events = await DbContext.Events.Where(e => e.State == Models.EntityState.Published).Select(e => Mapper.Map<EventViewModel>(e)).ToListAsync();
+      var events = await DbContext.Events.Where(e => e.State == Models.EntityState.Published).Select(e => EventMapper.Map(e)).ToListAsync();
       return Ok(events);
     }
 
@@ -71,7 +75,7 @@ namespace zulu.Controllers
     [HttpGet("deleted")]
     public async Task<IActionResult> ListDeleted()
     {
-      var events = await DbContext.Events.Where(e => e.State == Models.EntityState.Deleted).Select(e => Mapper.Map<EventViewModel>(e)).ToListAsync();
+      var events = await DbContext.Events.Where(e => e.State == Models.EntityState.Deleted).Select(e => EventMapper.Map(e)).ToListAsync();
       return Ok(events);
     }
 
@@ -84,7 +88,8 @@ namespace zulu.Controllers
 
       var @event = await DbContext.Events
           .Include(e => e.EventReports).ThenInclude(er => er.Report)
-          .Include(e => e.EventImages).ThenInclude(ei => ei.Image)
+          .Include(e => e.EventImages).ThenInclude(ei => ei.Image).ThenInclude(i => i.ContentType)
+          .Include(e => e.Attendance).ThenInclude(ea => ea.Member)
           .SingleOrDefaultAsync(e => e.Id == id);
 
       if (@event == null)
@@ -94,7 +99,7 @@ namespace zulu.Controllers
 
       if (User.Identity.IsAuthenticated || @event.State == Models.EntityState.Published)
       {
-        return Ok(Mapper.Map<EventViewModel>(@event));
+        return Ok(EventMapper.MapFull(@event));
       }
 
       return Unauthorized();
@@ -141,7 +146,7 @@ namespace zulu.Controllers
 
     [SuppressValidateModel]
     [HttpPost("published")]
-    public async Task<IActionResult> Publish([FromBody]EditEventViewModel model)
+    public async Task<IActionResult> Publish([FromBody]FullEventViewModel model)
     {
       if (model.Id > 0)
       {
@@ -172,12 +177,12 @@ namespace zulu.Controllers
           return BadRequest(ModelState);
         }
 
-        var @event = Mapper.Map<Event>(model);
+        var @event = EventMapper.Update(new Event(), model);
         if (@event.Publish())
         {
           await DbContext.Events.AddAsync(@event);
           await DbContext.SaveChangesAsync();
-          return CreatedAtRoute("GetEvent", new { @event.Id }, Mapper.Map<EventViewModel>(@event));
+          return CreatedAtRoute("GetEvent", new { @event.Id }, EventMapper.MapFull(@event));
         }
       }
 
@@ -205,18 +210,18 @@ namespace zulu.Controllers
 
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody]CreateEventViewModel model)
+    public async Task<IActionResult> Post([FromBody]FullEventViewModel model)
     {
-      var @event = Mapper.Map<Event>(model);
+      var @event = EventMapper.Update(new Event(), model);
 
       await DbContext.Events.AddAsync(@event);
       await DbContext.SaveChangesAsync();
-      return CreatedAtRoute("GetEvent", new { @event.Id }, Mapper.Map<EventViewModel>(@event));
+      return CreatedAtRoute("GetEvent", new { @event.Id }, EventMapper.MapFull(@event));
     }
 
 
     [HttpPut("{id:int}")]
-    public async Task<IActionResult> Put(int id, [FromBody]EditEventViewModel model)
+    public async Task<IActionResult> Put(int id, [FromBody]FullEventViewModel model)
     {
       var @event = await DbContext.Events.SingleOrDefaultAsync(e => e.Id == id);
       if (@event == null)
@@ -224,11 +229,11 @@ namespace zulu.Controllers
         return NotFound();
       }
 
-      Mapper.Map(model, @event);
+      EventMapper.Update(@event, model);
 
       await DbContext.SaveChangesAsync();
 
-      return Ok(Mapper.Map<EventViewModel>(@event));
+      return Ok(EventMapper.MapFull(@event));
     }
 
 
@@ -263,20 +268,20 @@ namespace zulu.Controllers
 
     private IActionResult ListReportsUndeletedAsync(Event @event)
     {
-      var reports = @event.EventReports.Where(er => er.Report.State != Models.EntityState.Deleted).Select(r => Mapper.Map<ListReportViewModel>(r.Report)).ToList();
+      var reports = @event.EventReports.Where(er => er.Report.State != Models.EntityState.Deleted).Select(r => ReportMapper.Map(r.Report)).ToList();
       return Ok(reports);
     }
 
 
     private IActionResult ListReportsPublished(Event @event)
     {
-      var reports = @event.EventReports.Where(er => er.Report.State == Models.EntityState.Published).Select(r => Mapper.Map<ListReportViewModel>(r.Report)).ToList();
+      var reports = @event.EventReports.Where(er => er.Report.State == Models.EntityState.Published).Select(r => ReportMapper.Map(r.Report)).ToList();
       return Ok(reports);
     }
 
 
     [HttpPost("{id:int}/reports")]
-    public async Task<IActionResult> PostReport(int id, [FromBody]CreateReportViewModel model)
+    public async Task<IActionResult> PostReport(int id, [FromBody]ReportViewModel model)
     {
       var @event = await DbContext.Events.SingleOrDefaultAsync(e => e.Id == id);
       if (@event == null)
@@ -284,11 +289,11 @@ namespace zulu.Controllers
         return NotFound();
       }
 
-      var report = Mapper.Map<Report>(model);
+      var report = ReportMapper.Update(new Report(), model);
       @event.EventReports.Add(new EventReport { Report = report });
       await DbContext.SaveChangesAsync();
 
-      return CreatedAtRoute("GetReport", new { id = report.Id }, Mapper.Map<ReportViewModel>(report));
+      return CreatedAtRoute("GetReport", new { id = report.Id }, ReportMapper.Map(report));
     }
 
 
@@ -316,7 +321,7 @@ namespace zulu.Controllers
 
 
     [HttpPost("{id:int}/images")]
-    public async Task<ActionResult> PostImage(int id, [FromBody]CreateImageViewModel model)
+    public async Task<ActionResult> PostImage(int id, [FromBody]ImageDescriptionViewModel model)
     {
       var @event = await DbContext.Events.SingleOrDefaultAsync(e => e.Id == id);
       if (@event == null)
@@ -324,11 +329,10 @@ namespace zulu.Controllers
         return NotFound();
       }
 
-      var image = Mapper.Map<Image>(model);
+      var image = ImageDescriptionMapper.Update(new Image(), model);
       @event.EventImages.Add(new EventImage { Image = image });
       await DbContext.SaveChangesAsync();
 
-      // return Ok(new { Location = Url.Action("Get", "Image", new { id = image.Id })});
       return CreatedAtRoute("GetImage", new { id = image.Id });
     }
 
@@ -350,6 +354,56 @@ namespace zulu.Controllers
 
       eventImage.Image.Delete();
       @event.EventImages.Remove(eventImage);
+      await DbContext.SaveChangesAsync();
+
+      return NoContent();
+    }
+
+
+    [HttpGet("{id:int}/attendance")]
+    public async Task<IActionResult> ListAttendance(int id)
+    {
+      var @event = await DbContext.Events
+        .Include(e => e.Attendance).ThenInclude(ea => ea.Member)
+        .SingleOrDefaultAsync(e => e.Id == id);
+
+      if (@event == null)
+      {
+        return NotFound();
+      }
+
+      var attendance = @event.Attendance.Select(a => AttendanceMapper.Map(a));
+      return Ok(attendance);
+    }
+
+
+    [HttpPost("{id:int}/attendance")]
+    public async Task<IActionResult> PostAttendance(int id, [FromBody]EventAttendanceViewModel model)
+    {
+      var @event = await DbContext.Events.SingleOrDefaultAsync(e => e.Id == id);
+      if (@event == null)
+      {
+        return NotFound($"Event '{id}' not found.");
+      }
+
+      var attendance = AttendanceMapper.Update(new EventAttendance(), model);
+      @event.Attendance.Add(attendance);
+      await DbContext.SaveChangesAsync();
+
+      return NoContent();
+    }
+
+
+    [HttpDelete("{id:int}/attendance/{memberId:int}")]
+    public async Task<IActionResult> DeleteAttendance(int id, int memberId)
+    {
+      var attendance = await DbContext.Attendance.SingleOrDefaultAsync(a => a.EventId == id && a.MemberId == memberId);
+      if (attendance == null)
+      {
+        return NotFound();
+      }
+
+      DbContext.Attendance.Remove(attendance);
       await DbContext.SaveChangesAsync();
 
       return NoContent();
