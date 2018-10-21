@@ -77,4 +77,5 @@ export class Event {
   allDay: boolean;
   deleted: false;
   images: any[];
+  reports: any[];
 }

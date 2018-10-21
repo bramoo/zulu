@@ -10,7 +10,9 @@ import { Report, ReportsService } from '../reports.service';
 export class ReportListComponent implements OnInit {
   public reports: Report[];
 
-  constructor(private service: ReportsService) { }
+  constructor(
+    private service: ReportsService
+  ) { }
 
   ngOnInit() {
     this.service.getReports()
@@ -19,6 +21,6 @@ export class ReportListComponent implements OnInit {
 
   delete(report: Report) {
     this.service.deleteReport(report.id)
-      .subscribe(ok => alert("Deleted"), error => alert("Failed"));
+      .subscribe(ok => this.ngOnInit());
   }
 }

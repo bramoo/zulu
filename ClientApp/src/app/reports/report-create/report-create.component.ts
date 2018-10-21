@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 
 import { Event, EventsService } from "../../events/events.service";
 import { Report, ReportsService } from '../reports.service';
@@ -16,6 +16,7 @@ export class ReportCreateComponent {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private reportService: ReportsService,
     private eventService: EventsService
   ) { }
@@ -33,11 +34,11 @@ export class ReportCreateComponent {
   submit() {
     if (this.event) {
       this.eventService.createReport(this.event, this.report)
-        .subscribe(ok => alert("Created"), error => alert("Failed"));
+        .subscribe(ok => this.router.navigate(['/events', this.event]));
     }
     else {
       this.reportService.createReport(this.report)
-        .subscribe(ok => alert("Created"), error => alert("Failed"));
+        .subscribe(ok => this.router.navigate(['/reports']));
     }
   }
 }

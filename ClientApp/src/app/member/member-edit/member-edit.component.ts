@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Member, MemberService } from '../member.service';
 
@@ -12,6 +12,7 @@ export class MemberEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private service: MemberService
   ) { }
 
@@ -24,6 +25,6 @@ export class MemberEditComponent implements OnInit {
 
   submit() {
     this.service.editMember(this.member)
-      .subscribe(ok => alert("Updated"), error => alert("Update failed"));
+      .subscribe(ok => this.router.navigate(['/members', this.member.id]));
   }
 }

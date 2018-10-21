@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Report, ReportsService } from '../reports.service';
 
@@ -13,6 +13,7 @@ export class ReportEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private service: ReportsService
   ) { }
 
@@ -25,6 +26,6 @@ export class ReportEditComponent implements OnInit {
 
   submit() {
     this.service.editReport(this.report)
-      .subscribe(ok => alert("Updated"), error => alert("Update failed"));
+      .subscribe(ok => this.router.navigate(['/reports', this.report.id]));
   }
 }

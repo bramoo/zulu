@@ -60,7 +60,7 @@ export class AuthService {
             return false;
           }
         }))
-    , "Logging in ..."));
+    , "Logging in ...");
   }
 
   public logout() {
