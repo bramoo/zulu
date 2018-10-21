@@ -12,15 +12,23 @@ export class PopupComponent {
   public result: any;
 
   public get heading() {
-    return this.config.heading || "Heading";
+    return this.config && this.config.heading || "Heading";
   }
 
   public get message() {
-    return this.config.message || "Message";
+    return this.config && this.config.message || "Message";
+  }
+
+  public get spinner() {
+    return this.config && this.config.spinner;
   }
 
   public get haveClose() {
     return !this.config || !!(this.config.buttons & PopupButton.Close);
+  }
+
+  public get haveFooter() {
+    return this.haveClose;
   }
 
   public doClose() {
@@ -31,6 +39,7 @@ export class PopupComponent {
 export class PopupComponentConfig {
   heading?: string;
   message?: string;
+  spinner?: boolean;
   buttons?: PopupButton
 }
 
