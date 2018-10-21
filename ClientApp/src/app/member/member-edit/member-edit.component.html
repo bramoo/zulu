@@ -1,6 +1,6 @@
 <h1>Edit Member</h1>
 
-<form (submit)="submit()">
+<form *ngIf="member" (submit)="submit()">
   <div class="form-group">
     <label for="firstName">First Name</label>
     <input id="firstName" name="firstName" [(ngModel)]="member.firstName" class="form-control" />

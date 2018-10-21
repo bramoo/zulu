@@ -1,6 +1,7 @@
 import { Component, Inject, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { Headers, Response } from "@angular/http";
 import { AuthHttp } from 'angular2-jwt';
+import { PopupService } from '../popup/popup.service';
 
 @Component({
   selector: 'image-upload',
@@ -14,7 +15,8 @@ export class ImageUploadComponent implements OnInit {
 
   constructor(
     @Inject("BASE_URL") private baseUrl: string,
-    private http: AuthHttp
+    private http: AuthHttp,
+    private popupService: PopupService
   ) { }
 
   ngOnInit() {
@@ -41,8 +43,9 @@ export class ImageUploadComponent implements OnInit {
         description: "an image"
       };
 
-      this.http.post(this.baseUrl + "api/v1/events/" + this.eventid + "/images", body)
-        .subscribe(response => this.getData(this.file, response));
+      this.popupService.addWaitDialog(
+        this.http.post(this.baseUrl + "api/v1/events/" + this.eventid + "/images", body)
+      ).subscribe(response => this.getData(this.file, response));
     }
   }
 
@@ -58,7 +61,10 @@ export class ImageUploadComponent implements OnInit {
 
   putData(id: string, data: any, type: string) {
     let headers = new Headers({ "Content-Type": type });
-    this.http.put(this.baseUrl + "api/v1/images/" + id, data, { headers: headers }).subscribe(response => {
+
+    this.popupService.addWaitDialog(
+      this.http.put(this.baseUrl + "api/v1/images/" + id, data, { headers: headers })
+    ).subscribe(response => {
       if (response.ok) {
         this.uploaded.emit(id);
       }

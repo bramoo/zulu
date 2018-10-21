@@ -12,15 +12,15 @@ export class PopupComponent {
   public result: any;
 
   public get heading() {
-    return this.config.heading || "Heading";
+    return this.config && this.config.heading || "Heading";
   }
 
   public get message() {
-    return this.config.message || "Message";
+    return this.config && this.config.message || "Message";
   }
 
   public get spinner() {
-    return this.config.spinner;
+    return this.config && this.config.spinner;
   }
 
   public get haveClose() {
