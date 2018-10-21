@@ -1,6 +1,6 @@
 // angular
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
@@ -23,6 +23,9 @@ import { PopupModule } from './popup/popup.module';
 import { ReportsModule } from './reports/reports.module';
 
 import { AppRoutingModule } from './app-routing.module';
+
+// util
+import { PopupErrorHandler } from './error-handler/error-handler';
 
 @NgModule({
   declarations: [
@@ -47,7 +50,7 @@ import { AppRoutingModule } from './app-routing.module';
     ReportsModule,
     AppRoutingModule
   ],
-  providers: [],
+  providers: [{provide: ErrorHandler, useClass: PopupErrorHandler}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
