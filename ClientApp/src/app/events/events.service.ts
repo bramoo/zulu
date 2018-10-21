@@ -6,16 +6,20 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
 import { Report } from "../reports/reports.service";
+import { PopupService } from '../popup/popup.service';
 
 @Injectable()
 export class EventsService {
 
   constructor(
     @Inject("BASE_URL") private baseurl: string,
-    private http: AuthHttp
+    private http: AuthHttp,
+    private popupService: PopupService
   ) { }
 
   public getEvents(): Observable<Event[]> {
+    let popupRef = this.popupService.waitDialog();
+
     return this.http.get(this.baseurl + 'api/v1/events')
       .map(response => response.json() as Event[]);
   }

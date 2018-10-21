@@ -16,10 +16,11 @@ export class PopupService {
     });
   }
 
-  public waitDialog(message: string) {
+  public waitDialog(message = "Loading ...") {
     return this.createPopupComponent({
       heading: "Please Wait",
-      message: message
+      message: message,
+      spinner: true
     });
   }
 
