@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, ViewContainerRef } from '@angular/core';
+import { PopupService } from './popup/popup.service';
 
 @Component({
   selector: 'app-root',
@@ -8,4 +9,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'app';
+
+  constructor(
+    popupService: PopupService,
+    ref: ViewContainerRef
+  ) {
+    popupService.setRoot(ref);
+  }
 }
