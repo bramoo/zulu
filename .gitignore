@@ -238,3 +238,4 @@ _Pvt_Extensions
 # SQLite DB files
 *.db
 /wwwroot/images
+ClientApp/package-lock.json

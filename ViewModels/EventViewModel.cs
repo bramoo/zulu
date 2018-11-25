@@ -39,9 +39,9 @@ namespace zulu.ViewModels
       RuleFor(e => e.Start).NotEmpty();
       RuleFor(e => e.End).NotEmpty().GreaterThan(e => e.Start).WithMessage("'End' must be after 'Start'");
 
-      // RuleFor(e => e.Attendance).SetCollectionValidator(new AttendanceViewModelValidator());
-      RuleFor(e => e.Reports).SetCollectionValidator(new ReportViewModelValidator());
-      RuleFor(e => e.Images).SetCollectionValidator(new ImageDescriptionViewModelValidator());
+      RuleForEach(e => e.Attendance).SetValidator(new EventAttendanceViewModelValidator());
+      RuleForEach(e => e.Reports).SetValidator(new ReportViewModelValidator());
+      RuleForEach(e => e.Images).SetValidator(new ImageDescriptionViewModelValidator());
     }
   }
 }
