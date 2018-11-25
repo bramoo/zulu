@@ -2,7 +2,7 @@
 
 namespace zulu.Models
 {
-	public class Report : Entity
+	public class Report : PublishableEntity
   {
     public string Title { get; set; }
     public string Content { get; set; }

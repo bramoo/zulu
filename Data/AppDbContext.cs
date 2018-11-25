@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using zulu.Models;
+using zulu.Models.Assignments;
 
 namespace zulu.Data
 {
@@ -26,6 +27,9 @@ namespace zulu.Data
     public DbSet<MemberRank> MemberRanks { get; set; }
 
     public DbSet<EventAttendance> Attendance { get; set; }
+
+    public DbSet<Assignment> Assignments { get; set; }
+    public DbSet<WriteEventReportAssignment> WriteEventReportAssignments { get; set; }
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)

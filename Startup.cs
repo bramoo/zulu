@@ -12,10 +12,12 @@ using System;
 using System.Text;
 using zulu.Attributes;
 using zulu.Data;
+using zulu.Extensions;
+using zulu.Models.Assignments;
 using zulu.Services;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using System.Collections.Generic;
+using zulu.ViewModels.Assignments;
 using zulu.ViewModels.Mapper;
+using zulu.ViewModels.Mapper.Assignments;
 
 namespace zulu
 {
@@ -46,6 +48,8 @@ namespace zulu
 
       services.AddDbContext<AppDbContext>(options =>
           options.UseSqlite("Data Source=zulu.db"));
+      //services.AddDbContext<AppDbContext>(options => 
+      //	options.UseNpgsql(Configuration.GetConnectionString("AppDbContext")));
 
       services.AddIdentity<AppUser, IdentityRole>()
           .AddEntityFrameworkStores<AppDbContext>();
@@ -63,6 +67,7 @@ namespace zulu
 
       services.AddMvc(options =>
       {
+        options.Conventions.Add(new ControllerNameAttributeConvention());
         options.Filters.Add(new ValidateModelAttribute());
       }).AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<Startup>());
 
@@ -88,6 +93,8 @@ namespace zulu
       services.AddScoped<IMapper<Models.Event, ViewModels.EventViewModel>, EventMapper>();
       services.AddScoped<IMapper<Models.Event, ViewModels.FullEventViewModel>, EventMapper>();
       services.AddScoped<EventMapper>();
+      services.AddScoped<IMapper<WriteEventReportAssignment, WriteEventReportAssignmentViewModel>, WriteEventReportAssignmentMapper>();
+      services.AddScoped<WriteEventReportAssignmentMapper>();
     }
 
 

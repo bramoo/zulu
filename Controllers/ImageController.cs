@@ -74,7 +74,7 @@ namespace zulu.Controllers
 
     [HttpDelete("{id:int}")]
     [Authorize]
-    public async Task<ActionResult> Delete(int id)
+    public Task<ActionResult> Delete(int id)
     {
       throw new NotImplementedException();
     }

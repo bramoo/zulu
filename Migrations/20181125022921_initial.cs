@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace zulu.Migrations
 {
@@ -13,9 +12,9 @@ namespace zulu.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
                     Name = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true)
+                    NormalizedName = table.Column<string>(maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -41,13 +40,13 @@ namespace zulu.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    AllDay = table.Column<bool>(nullable: false),
+                    State = table.Column<int>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
-                    End = table.Column<DateTime>(nullable: false),
                     Modified = table.Column<DateTime>(nullable: false),
                     Name = table.Column<string>(nullable: true),
+                    AllDay = table.Column<bool>(nullable: false),
                     Start = table.Column<DateTime>(nullable: false),
-                    State = table.Column<int>(nullable: false)
+                    End = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -86,12 +85,12 @@ namespace zulu.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Author = table.Column<string>(nullable: true),
-                    Content = table.Column<string>(nullable: true),
+                    State = table.Column<int>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
                     Modified = table.Column<DateTime>(nullable: false),
-                    State = table.Column<int>(nullable: false),
-                    Title = table.Column<string>(nullable: true)
+                    Title = table.Column<string>(nullable: true),
+                    Content = table.Column<string>(nullable: true),
+                    Author = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -104,9 +103,9 @@ namespace zulu.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
+                    RoleId = table.Column<string>(nullable: false),
                     ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true),
-                    RoleId = table.Column<string>(nullable: false)
+                    ClaimValue = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -125,12 +124,13 @@ namespace zulu.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    ContentTypeId = table.Column<int>(nullable: true),
+                    State = table.Column<int>(nullable: false),
                     Created = table.Column<DateTime>(nullable: false),
-                    Description = table.Column<string>(nullable: true),
-                    FileName = table.Column<string>(nullable: true),
                     Modified = table.Column<DateTime>(nullable: false),
-                    State = table.Column<int>(nullable: false)
+                    FileName = table.Column<string>(nullable: true),
+                    DisplayName = table.Column<string>(nullable: true),
+                    ContentTypeId = table.Column<int>(nullable: true),
+                    Description = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -139,43 +139,6 @@ namespace zulu.Migrations
                         name: "FK_Images_ContentTypes_ContentTypeId",
                         column: x => x.ContentTypeId,
                         principalTable: "ContentTypes",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Members",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    Alias = table.Column<string>(nullable: true),
-                    Created = table.Column<DateTime>(nullable: false),
-                    DateOfBirth = table.Column<DateTime>(nullable: true),
-                    Email = table.Column<string>(nullable: true),
-                    FirstName = table.Column<string>(nullable: true),
-                    Invested = table.Column<DateTime>(nullable: true),
-                    Joined = table.Column<DateTime>(nullable: true),
-                    Left = table.Column<DateTime>(nullable: true),
-                    Modified = table.Column<DateTime>(nullable: false),
-                    Positionid = table.Column<int>(nullable: true),
-                    RankId = table.Column<int>(nullable: true),
-                    State = table.Column<int>(nullable: false),
-                    Surname = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Members", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Members_MemberPositions_Positionid",
-                        column: x => x.Positionid,
-                        principalTable: "MemberPositions",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Members_MemberRanks_RankId",
-                        column: x => x.RankId,
-                        principalTable: "MemberRanks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -229,79 +192,6 @@ namespace zulu.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    MemberId = table.Column<int>(nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUsers_Members_MemberId",
-                        column: x => x.MemberId,
-                        principalTable: "Members",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserClaims",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
-                    ClaimType = table.Column<string>(nullable: true),
-                    ClaimValue = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUserLogins",
-                columns: table => new
-                {
-                    LoginProvider = table.Column<string>(nullable: false),
-                    ProviderKey = table.Column<string>(nullable: false),
-                    ProviderDisplayName = table.Column<string>(nullable: true),
-                    UserId = table.Column<string>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
-                    table.ForeignKey(
-                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
@@ -317,12 +207,35 @@ namespace zulu.Migrations
                         principalTable: "AspNetRoles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    UserId = table.Column<string>(nullable: false),
+                    ClaimType = table.Column<string>(nullable: true),
+                    ClaimValue = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(nullable: false),
+                    ProviderKey = table.Column<string>(nullable: false),
+                    ProviderDisplayName = table.Column<string>(nullable: true),
+                    UserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
                 });
 
             migrationBuilder.CreateTable(
@@ -337,10 +250,141 @@ namespace zulu.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Members",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    State = table.Column<int>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Modified = table.Column<DateTime>(nullable: false),
+                    FirstName = table.Column<string>(nullable: true),
+                    Surname = table.Column<string>(nullable: true),
+                    Alias = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
+                    DateOfBirth = table.Column<DateTime>(nullable: true),
+                    Positionid = table.Column<int>(nullable: true),
+                    RankId = table.Column<int>(nullable: true),
+                    Joined = table.Column<DateTime>(nullable: true),
+                    Invested = table.Column<DateTime>(nullable: true),
+                    Left = table.Column<DateTime>(nullable: true),
+                    AssignmentId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Members", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
-                        column: x => x.UserId,
-                        principalTable: "AspNetUsers",
+                        name: "FK_Members_MemberPositions_Positionid",
+                        column: x => x.Positionid,
+                        principalTable: "MemberPositions",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Members_MemberRanks_RankId",
+                        column: x => x.RankId,
+                        principalTable: "MemberRanks",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    MemberId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Members_MemberId",
+                        column: x => x.MemberId,
+                        principalTable: "Members",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Assignments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    State = table.Column<int>(nullable: false),
+                    Created = table.Column<DateTime>(nullable: false),
+                    Modified = table.Column<DateTime>(nullable: false),
+                    AssignmentType = table.Column<string>(nullable: true),
+                    Description = table.Column<string>(nullable: true),
+                    DueDate = table.Column<DateTime>(nullable: true),
+                    CompletionDate = table.Column<DateTime>(nullable: true),
+                    OwnerId = table.Column<int>(nullable: false),
+                    AssigneeId = table.Column<int>(nullable: false),
+                    Discriminator = table.Column<string>(nullable: false),
+                    EventId = table.Column<int>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Assignments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Assignments_Members_AssigneeId",
+                        column: x => x.AssigneeId,
+                        principalTable: "Members",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Assignments_Members_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "Members",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Assignments_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Attendance",
+                columns: table => new
+                {
+                    EventId = table.Column<int>(nullable: false),
+                    MemberId = table.Column<int>(nullable: false),
+                    Attended = table.Column<bool>(nullable: false),
+                    ServiceHours = table.Column<decimal>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Attendance", x => new { x.EventId, x.MemberId });
+                    table.ForeignKey(
+                        name: "FK_Attendance_Events_EventId",
+                        column: x => x.EventId,
+                        principalTable: "Events",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Attendance_Members_MemberId",
+                        column: x => x.MemberId,
+                        principalTable: "Members",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -388,6 +432,26 @@ namespace zulu.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Assignments_AssigneeId",
+                table: "Assignments",
+                column: "AssigneeId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Assignments_OwnerId",
+                table: "Assignments",
+                column: "OwnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Assignments_EventId",
+                table: "Assignments",
+                column: "EventId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Attendance_MemberId",
+                table: "Attendance",
+                column: "MemberId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ContentTypes_Name",
                 table: "ContentTypes",
                 column: "Name",
@@ -422,6 +486,11 @@ namespace zulu.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Members_AssignmentId",
+                table: "Members",
+                column: "AssignmentId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Members_Email",
                 table: "Members",
                 column: "Email",
@@ -441,10 +510,58 @@ namespace zulu.Migrations
                 name: "IX_Members_Alias_Surname_FirstName",
                 table: "Members",
                 columns: new[] { "Alias", "Surname", "FirstName" });
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                table: "AspNetUserRoles",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                table: "AspNetUserTokens",
+                column: "UserId",
+                principalTable: "AspNetUsers",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Members_Assignments_AssignmentId",
+                table: "Members",
+                column: "AssignmentId",
+                principalTable: "Assignments",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropForeignKey(
+                name: "FK_Assignments_Members_AssigneeId",
+                table: "Assignments");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Assignments_Members_OwnerId",
+                table: "Assignments");
+
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -459,6 +576,9 @@ namespace zulu.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Attendance");
 
             migrationBuilder.DropTable(
                 name: "EventImage");
@@ -476,22 +596,25 @@ namespace zulu.Migrations
                 name: "Images");
 
             migrationBuilder.DropTable(
-                name: "Events");
+                name: "Reports");
 
             migrationBuilder.DropTable(
-                name: "Reports");
+                name: "ContentTypes");
 
             migrationBuilder.DropTable(
                 name: "Members");
 
             migrationBuilder.DropTable(
-                name: "ContentTypes");
+                name: "Assignments");
 
             migrationBuilder.DropTable(
                 name: "MemberPositions");
 
             migrationBuilder.DropTable(
                 name: "MemberRanks");
+
+            migrationBuilder.DropTable(
+                name: "Events");
         }
     }
 }

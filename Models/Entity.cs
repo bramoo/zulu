@@ -9,7 +9,8 @@ namespace zulu.Models
   {
     Draft,
     Published,
-    Deleted
+    Deleted,
+    Created
   }
 
   public abstract class Entity
@@ -17,6 +18,7 @@ namespace zulu.Models
     public Entity()
     {
       Created = Modified = DateTime.Now;
+      State = EntityState.Created;
     }
 
     public int Id { get; set; }
@@ -32,30 +34,6 @@ namespace zulu.Models
     public DateTime Modified { get; set; }
 
 
-    public bool Publish()
-    {
-      if (State == EntityState.Draft)
-      {
-        State = EntityState.Published;
-        return true;
-      }
-
-      return false;
-    }
-
-
-    public bool UnPublish()
-    {
-      if (State == EntityState.Published)
-      {
-        State = EntityState.Draft;
-        return true;
-      }
-
-      return false;
-    }
-
-
     public bool Delete()
     {
       State = EntityState.Deleted;
@@ -63,11 +41,11 @@ namespace zulu.Models
     }
 
 
-    public bool UnDelete()
+    public virtual bool UnDelete()
     {
       if (State == EntityState.Deleted)
       {
-        State = EntityState.Draft;
+        State = EntityState.Created;
         return true;
       }
 

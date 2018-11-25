@@ -37,7 +37,7 @@ namespace zulu.ViewModels
       RuleFor(m => m.Invested)
         .GreaterThanOrEqualTo(m => m.Joined).WithMessage("Can't be inversted before you joined.");
       RuleFor(m => m.Left)
-        .GreaterThan(m => m.Joined).WithMessage("Can't leave after joining.")
+        .GreaterThan(m => m.Joined).WithMessage("Can't leave before joining.")
         .GreaterThan(m => m.Invested).WithMessage("Can't leave before investiture.");
     }
   }
