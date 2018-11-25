@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { Event, EventsService } from '../events.service';
 
@@ -13,6 +13,7 @@ export class EventEditComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private service: EventsService
   ) { }
 
@@ -25,6 +26,6 @@ export class EventEditComponent implements OnInit {
 
   submit() {
     this.service.editEvent(this.event)
-      .subscribe(ok => alert("Updated"), error => alert("Update failed"));
+      .subscribe(ok => this.router.navigate(['/events', this.event.id]));
   }
 }

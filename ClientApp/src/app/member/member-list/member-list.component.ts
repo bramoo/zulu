@@ -18,6 +18,6 @@ export class MemberListComponent implements OnInit {
 
   delete(member: Member) {
     this.service.deleteMember(member.id)
-      .subscribe(ok => alert("Deleted"), error => alert("Failed"));
+      .subscribe(ok => this.ngOnInit());
   }
 }

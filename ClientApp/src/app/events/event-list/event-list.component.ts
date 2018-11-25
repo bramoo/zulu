@@ -19,6 +19,6 @@ export class EventListComponent implements OnInit {
 
   delete(event: Event) {
     this.service.deleteEvent(event.id)
-      .subscribe(ok => alert("Deleted"), error => alert("Failed"));
+      .subscribe(ok => this.ngOnInit());
   }
 }

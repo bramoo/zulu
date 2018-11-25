@@ -1,6 +1,6 @@
 <h1>Edit Event</h1>
 
-<form (submit)="submit()">
+<form *ngIf="event" (submit)="submit()">
   <div class="form-group">
     <label for="name">Name</label>
     <input id="name" name="name" [(ngModel)]="event.name" class="form-control" />

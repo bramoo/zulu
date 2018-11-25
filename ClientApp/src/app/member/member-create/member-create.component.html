@@ -12,8 +12,28 @@
   </div>
 
   <div class="form-group">
+    <label for="alias">Alias</label>
+    <input id="alias" name="alias" [(ngModel)]="member.alias" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="email">Email</label>
+    <input id="email" name="email" [(ngModel)]="member.email" type="email" class="form-control" />
+  </div>
+
+  <div class="form-group">
     <label for="joined">Joined</label>
     <input id="joined" name="joined" [(ngModel)]="member.joined" type="date" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="invested">Invested</label>
+    <input id="invested" name="invested" [(ngModel)]="member.invested" type="date" class="form-control" />
+  </div>
+
+  <div class="form-group">
+    <label for="left">Left</label>
+    <input id="left" name="left" [(ngModel)]="member.left" type="date" class="form-control" />
   </div>
 
   <button type="submit" class="btn btn-primary">Create</button>
