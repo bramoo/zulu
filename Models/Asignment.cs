@@ -19,5 +19,15 @@ namespace zulu.Models
     public Member Assignee { get; set; }
 
     public ISet<Member> Followers { get; set; }
+
+    public void Complete()
+    {
+      CompletionDate = DateTime.Now;
+    }
+
+    public void Uncomplete()
+    {
+      CompletionDate = null;
+    }
   }
 }

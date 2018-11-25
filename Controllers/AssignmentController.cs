@@ -12,7 +12,7 @@ namespace zulu.Controllers
 {
   [Route("api/v1/assignments/[controller`]")]
   public abstract class AssignmentControllerBase<TAssignment, TAssignmentMapper, TViewModel> : Controller
-    where TAssignment : Assignment
+    where TAssignment : Assignment, new()
     where TViewModel : AssignmentViewModel<TAssignment>
     where TAssignmentMapper : AssignmentMapper<TAssignment, TViewModel>
   {
@@ -28,6 +28,7 @@ namespace zulu.Controllers
 
     protected abstract IQueryable<TAssignment> Assignments { get; }
 
+
     [HttpGet]
     public async Task<IActionResult> ListAll()
     {
@@ -38,6 +39,7 @@ namespace zulu.Controllers
         .Select(a => Mapper.Map(a)).ToListAsync();
       return Ok(assignments);
     }
+
 
     [HttpGet("outstanding")]
     public async Task<IActionResult> ListOutstanding()
@@ -50,8 +52,9 @@ namespace zulu.Controllers
       return Ok(assignments);
     }
 
-    [HttpGet("complete")]
-    public async Task<IActionResult> ListComplete()
+
+    [HttpGet("completed")]
+    public async Task<IActionResult> ListCompleted()
     {
       var assignments = await Assignments
         .Include(a => a.Owner)
@@ -59,6 +62,67 @@ namespace zulu.Controllers
         .Include(a => a.Followers)
         .Where(a => a.CompletionDate != null).Select(a => Mapper.Map(a)).ToListAsync();
       return Ok(assignments);
+    }
+
+
+    [HttpPost]
+    public async Task<IActionResult> Post([FromBody]TViewModel model)
+    {
+      var assignment = Mapper.Update(new TAssignment(), model);
+      await DbContext.Assignments.AddAsync(@assignment);
+      await DbContext.SaveChangesAsync();
+      return CreatedAtRoute("GetAssignment", new { assignment.Id }, Mapper.Map(assignment));
+    }
+
+
+    [HttpDelete("{id:int}")]
+    public async Task<IActionResult> Delete(int id)
+    {
+      var assignment = await DbContext.Assignments.SingleOrDefaultAsync(e => e.Id == id);
+      if (assignment == null)
+      {
+        return NotFound();
+      }
+
+      if (assignment.Delete())
+      {
+        await DbContext.SaveChangesAsync();
+        return NoContent();
+      }
+
+      return BadRequest(); //Should not happen.
+    }
+
+
+    [HttpPost("completed")]
+    public async Task<IActionResult> PostCompleted([FromBody]TViewModel model)
+    {
+      var assignment = await DbContext.Assignments.SingleOrDefaultAsync(e => e.Id == model.Id);
+      if (assignment == null)
+      {
+        return NotFound();
+      }
+
+      assignment.Complete();
+
+      await DbContext.SaveChangesAsync();
+      return NoContent();
+    }
+
+
+    [HttpDelete("completed")]
+    public async Task<IActionResult> Uncompleted([FromBody]TViewModel model)
+    {
+      var assignment = await DbContext.Assignments.SingleOrDefaultAsync(e => e.Id == model.Id);
+      if (assignment == null)
+      {
+        return NotFound();
+      }
+
+      assignment.Uncomplete();
+
+      await DbContext.SaveChangesAsync();
+      return NoContent();
     }
   }
 }

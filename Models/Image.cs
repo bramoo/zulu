@@ -2,7 +2,7 @@ using System;
 
 namespace zulu.Models
 {
-  public class Image : Entity
+  public class Image : PublishableEntity
   {
     public string FileName { get; set; }
     public string DisplayName { get; set; }

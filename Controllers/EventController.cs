@@ -386,8 +386,16 @@ namespace zulu.Controllers
         return NotFound($"Event '{id}' not found.");
       }
 
-      var attendance = AttendanceMapper.Update(new EventAttendance(), model);
-      @event.Attendance.Add(attendance);
+      var attendance = @event.Attendance.SingleOrDefault(a => a.MemberId == model.Member.Id);
+      if (attendance == null)
+      {
+        attendance = AttendanceMapper.Update(new EventAttendance(), model);
+        @event.Attendance.Add(attendance);
+      }
+      else
+      {
+        AttendanceMapper.Update(attendance, model);
+      }
       await DbContext.SaveChangesAsync();
 
       return NoContent();

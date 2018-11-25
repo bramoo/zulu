@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace zulu.Models
 {
-  public class Event : Entity
+  public class Event : PublishableEntity
   {
     public Event()
     {
