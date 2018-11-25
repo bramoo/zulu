@@ -43,6 +43,7 @@
     <None Remove="ClientApp\src\app\auth\auth.service.ts" />
     <None Remove="ClientApp\src\app\auth\login.component.ts" />
     <None Remove="ClientApp\src\app\error-handler\error-handler.ts" />
+    <None Remove="ClientApp\src\app\events\event-attendance\event-attendance.component.ts" />
     <None Remove="ClientApp\src\app\popup\popup.component.ts" />
     <None Remove="ClientApp\src\app\popup\popup.module.ts" />
     <None Remove="ClientApp\src\app\popup\popup.service.ts" />
@@ -62,6 +63,7 @@
     <TypeScriptCompile Include="ClientApp\src\app\auth\auth.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\auth\login.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\error-handler\error-handler.ts" />
+    <TypeScriptCompile Include="ClientApp\src\app\events\event-attendance\event-attendance.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\popup\popup.component.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\popup\popup.service.ts" />
     <TypeScriptCompile Include="ClientApp\src\app\popup\popup.module.ts" />

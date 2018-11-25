@@ -4,10 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { Route, RouterModule } from '@angular/router';
 import { AuthGuard } from "../auth/auth.guard";
 
+import { MemberModule } from "../member/member.module";
+
 import { EventListComponent } from './event-list/event-list.component';
 import { EventCreateComponent } from './event-create/event-create.component';
 import { EventEditComponent } from './event-edit/event-edit.component';
 import { EventDetailsComponent } from './event-details/event-details.component';
+import { EventAttendanceComponent } from './event-attendance/event-attendance.component';
 
 import { EventsService } from './events.service';
 
@@ -28,6 +31,7 @@ const eventRoutes: Route[] = [
   imports: [
     CommonModule,
     FormsModule,
+    MemberModule,
     RouterModule.forChild(eventRoutes)
   ],
   exports: [
@@ -38,6 +42,7 @@ const eventRoutes: Route[] = [
     EventCreateComponent,
     EventEditComponent,
     EventDetailsComponent,
+    EventAttendanceComponent,
     ImageUploadComponent
   ],
   providers: [

@@ -1,0 +1,24 @@
+<form>
+  <div *ngFor="let record of records" class="form-row">
+    <div class="col">
+      <label>{{ record.member.firstName }} {{ record.member.surname }}</label>
+    </div>
+
+    <div class="col">
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [name]="'attendance-' + record.member.id" [id]="'attendance-yes-' + record.member.id" [(ngModel)]="record.attended" [value]="true" (ngModelChange)="updateRecord(record)" />
+        <label class="form-check-label" [for]="'attendance-yes-' + record.member.id">Attended</label>
+      </div>
+
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [name]="'attendance-' + record.member.id" [id]="'attendance-no-' + record.member.id" [(ngModel)]="record.attended" [value]="false" (ngModelChange)="updateRecord(record)" />
+        <label class="form-check-label" [for]="'attendance-no-' + record.member.id">Absent</label>
+      </div>
+
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" [name]="'attendance-' + record.member.id" [id]="'attendance-un-' + record.member.id" [(ngModel)]="record.attended" [value]="undefined" (ngModelChange)="updateRecord(record)" />
+        <label class="form-check-label" [for]="'attendance-un-' + record.member.id">Unknown</label>
+      </div>
+    </div>
+  </div>
+</form>
