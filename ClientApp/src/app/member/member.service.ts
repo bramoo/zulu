@@ -73,4 +73,6 @@ export class Member {
   joined: Date;
   invested: Date;
   left: Date;
+
+  get fullName() { return this.firstName + " " + this.surname }
 }

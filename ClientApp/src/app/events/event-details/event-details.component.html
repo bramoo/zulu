@@ -26,6 +26,11 @@
     <dt>Deleted</dt>
     <dd>{{ event.deleted }}</dd>
 
+    <dt>Attendance</dt>
+    <dd>
+      <event-attendance [eventId]="event.id" [attendance]="event.attendance"></event-attendance>
+    </dd>
+
     <dt>Reports</dt>
     <dd>
       <a *ngFor="let report of event.reports" class="d-block" [routerLink]="['/reports', report.id]">{{ report.title }}</a>

@@ -28,7 +28,6 @@ namespace zulu.ViewModels
     {
       RuleFor(a => a.Member).NotEmpty();
       RuleFor(a => a.Member.Id).NotEmpty();
-      RuleFor(a => a.Attended).NotEmpty();
       RuleFor(a => a.ServiceHours).GreaterThanOrEqualTo(0);
     }
   }

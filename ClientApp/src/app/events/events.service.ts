@@ -5,6 +5,8 @@ import { AuthHttp } from "angular2-jwt";
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 
+import { Member } from "../member/member.service";
+
 import { Report } from "../reports/reports.service";
 import { PopupService } from '../popup/popup.service';
 import { PopupComponent } from '../popup/popup.component';
@@ -66,6 +68,14 @@ export class EventsService {
         .map(response => response.ok)
     );
   }
+
+  public updateAttendance(id: number, attendance: Attendance) {
+    return this.http.post(this.baseurl + 'api/v1/events/' + id + '/attendance', attendance);
+  }
+
+  public deleteAttendance(eventId: number, memberId: number) {
+    return this.http.delete(this.baseurl + 'api/v1/events/' + eventId + '/attendance/' + memberId);
+  }
 }
 
 
@@ -78,4 +88,11 @@ export class Event {
   deleted: false;
   images: any[];
   reports: any[];
+  attendance: Attendance[];
+}
+
+export class Attendance {
+  member: Member;
+  attended: boolean;
+  serviceHours: number;
 }
