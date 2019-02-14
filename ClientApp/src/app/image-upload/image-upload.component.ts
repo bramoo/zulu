@@ -1,6 +1,5 @@
 import { Component, Inject, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { Headers, Response } from "@angular/http";
-import { AuthHttp } from 'angular2-jwt';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { PopupService } from '../popup/popup.service';
 
 @Component({
@@ -8,6 +7,7 @@ import { PopupService } from '../popup/popup.service';
   templateUrl: './image-upload.component.html',
   styleUrls: ['./image-upload.component.css']
 })
+
 export class ImageUploadComponent implements OnInit {
   @Input() public eventid: string;
   @Output() public uploaded = new EventEmitter<string>();
@@ -15,7 +15,7 @@ export class ImageUploadComponent implements OnInit {
 
   constructor(
     @Inject("BASE_URL") private baseUrl: string,
-    private http: AuthHttp,
+    private httpClient: HttpClient,
     private popupService: PopupService
   ) { }
 
@@ -44,30 +44,28 @@ export class ImageUploadComponent implements OnInit {
       };
 
       this.popupService.addWaitDialog(
-        this.http.post(this.baseUrl + "api/v1/events/" + this.eventid + "/images", body)
-      ).subscribe(response => this.getData(this.file, response));
+        this.httpClient.post<{ id: string }>("/api/v1/events/" + this.eventid + "/images", body)
+      ).subscribe(data => this.getData(this.file, data.id));
     }
   }
 
-  getData(file: File, response: Response) {
-    if (file && response.ok) {
-      let id = response.json().id;
-
+  getData(file: File, id: string) {
+    if (file) {
       let reader = new FileReader();
       reader.readAsArrayBuffer(file);
-      reader.onload = (event) => this.putData(id, reader.result, file.type);
+      reader.onload = () => this.putData(id, reader.result, file.type);
     }
   }
 
   putData(id: string, data: any, type: string) {
-    let headers = new Headers({ "Content-Type": type });
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': type
+      })
+    };
 
     this.popupService.addWaitDialog(
-      this.http.put(this.baseUrl + "api/v1/images/" + id, data, { headers: headers })
-    ).subscribe(response => {
-      if (response.ok) {
-        this.uploaded.emit(id);
-      }
-    });
+      this.httpClient.put(this.baseUrl + "api/v1/images/" + id, data, httpOptions)
+    ).subscribe(() => this.uploaded.emit(id));
   }
 }

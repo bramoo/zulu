@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -52,7 +52,7 @@ namespace zulu.Controllers
     }
 
 
-    
+
     [HttpGet()]
     public async Task<ActionResult> List()
     {

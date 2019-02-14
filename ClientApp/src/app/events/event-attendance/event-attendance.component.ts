@@ -11,7 +11,7 @@ import { Attendance, EventsService } from "../events.service";
 })
 export class EventAttendanceComponent implements OnInit {
   @Input() eventId: number;
-  public records = new Array<Attendance>();
+  public records: any = new Array<Attendance>();
 
   @Input()
   public set attendance(attendances: Attendance[]) {

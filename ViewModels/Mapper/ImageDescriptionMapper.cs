@@ -1,11 +1,11 @@
-using System;
+﻿using System;
 using System.Linq;
 using zulu.Data;
 using zulu.Models;
 
 namespace zulu.ViewModels.Mapper
 {
-  public class ImageDescriptionMapper 
+  public class ImageDescriptionMapper
     : IMapper<Models.Image, ImageDescriptionViewModel>
   {
     public ImageDescriptionMapper(AppDbContext dbContext)
@@ -30,7 +30,7 @@ namespace zulu.ViewModels.Mapper
         Description = src.Description,
       };
     }
-    
+
 
     public Models.Image Update(Models.Image dest, ImageDescriptionViewModel src)
     {

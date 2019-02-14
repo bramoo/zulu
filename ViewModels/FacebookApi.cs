@@ -1,4 +1,4 @@
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace zulu.ViewModels.FacebookApi
 {
@@ -41,6 +41,6 @@ namespace zulu.ViewModels.FacebookApi
 
   internal class FacebookUserAccessTokenValidation
   {
-     public FacebookUserAccessTokenData Data { get; set; }
+    public FacebookUserAccessTokenData Data { get; set; }
   }
 }

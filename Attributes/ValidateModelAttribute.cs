@@ -1,11 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
 using System.Linq;
 
 namespace zulu.Attributes
 {
-	public class ValidateModelAttribute : ActionFilterAttribute
+  public class ValidateModelAttribute : ActionFilterAttribute
   {
     public override void OnActionExecuting(ActionExecutingContext context)
     {

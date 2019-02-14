@@ -333,7 +333,7 @@ namespace zulu.Controllers
       @event.EventImages.Add(new EventImage { Image = image });
       await DbContext.SaveChangesAsync();
 
-      return CreatedAtRoute("GetImage", new { id = image.Id });
+      return CreatedAtRoute("GetImage", new { controller = "image", id = image.Id }, image);
     }
 
 

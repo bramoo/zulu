@@ -5,7 +5,7 @@ using System;
 
 namespace zulu.Models
 {
-	public enum EntityState
+  public enum EntityState
   {
     Draft,
     Published,

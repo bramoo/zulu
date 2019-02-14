@@ -2,7 +2,7 @@
 
 namespace zulu.Models
 {
-	public class Report : PublishableEntity
+  public class Report : PublishableEntity
   {
     public string Title { get; set; }
     public string Content { get; set; }
@@ -14,7 +14,7 @@ namespace zulu.Models
     public Event Event
     {
       get { return EventReport?.Event; }
-      set { if(EventReport != null) EventReport.Event = value; }
+      set { if (EventReport != null) EventReport.Event = value; }
     }
   }
 }

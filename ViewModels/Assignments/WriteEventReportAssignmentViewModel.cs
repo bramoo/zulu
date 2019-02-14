@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
@@ -8,12 +8,12 @@ using zulu.Models.Assignments;
 
 namespace zulu.ViewModels.Assignments
 {
-  public class WriteEventReportAssignmentViewModel : AssignmentViewModel<WriteEventReportAssignment> 
+  public class WriteEventReportAssignmentViewModel : AssignmentViewModel<WriteEventReportAssignment>
   {
     public EventViewModel Event { get; set; }
   }
 
-  public class WriteEventReportAssignmentValidator : AssignmentViewModelValidator<WriteEventReportAssignment, WriteEventReportAssignmentViewModel> 
+  public class WriteEventReportAssignmentValidator : AssignmentViewModelValidator<WriteEventReportAssignment, WriteEventReportAssignmentViewModel>
   {
     public WriteEventReportAssignmentValidator(AppDbContext dbContext)
       : base(dbContext)

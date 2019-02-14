@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2027
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28531.58
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "zulu", "zulu.csproj", "{42F5437E-12FD-44AB-89ED-CE034101810A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "zulu", "zulu.csproj", "{C6DCCD80-3468-469D-A0A9-4FFCF2BB3EEE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{42F5437E-12FD-44AB-89ED-CE034101810A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{42F5437E-12FD-44AB-89ED-CE034101810A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{42F5437E-12FD-44AB-89ED-CE034101810A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{42F5437E-12FD-44AB-89ED-CE034101810A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C6DCCD80-3468-469D-A0A9-4FFCF2BB3EEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C6DCCD80-3468-469D-A0A9-4FFCF2BB3EEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C6DCCD80-3468-469D-A0A9-4FFCF2BB3EEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C6DCCD80-3468-469D-A0A9-4FFCF2BB3EEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {50977D25-BC51-4C9F-B527-569E3579E8AC}
+		SolutionGuid = {7C1E2ADA-3EE7-4F23-850D-0A4587CF51C1}
 	EndGlobalSection
 EndGlobal

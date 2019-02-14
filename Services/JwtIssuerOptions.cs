@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace zulu.Services
 {
-	public class JwtIssuerOptions
+  public class JwtIssuerOptions
   {
     /// <summary>
     /// 4.1.1.  "iss" (Issuer) Claim - The "iss" (issuer) claim identifies the principal that issued the JWT.

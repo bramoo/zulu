@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  zulu:
+    image: ${DOCKER_REGISTRY-}zulu
+    build:
+      context: .
+      dockerfile: Dockerfile

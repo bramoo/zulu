@@ -1,9 +1,9 @@
 import { Inject, Injectable, ComponentRef } from '@angular/core';
-import { Http, Response } from '@angular/http';
-import { AuthHttp } from "angular2-jwt";
+import { HttpClient } from '@angular/common/http';
+
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/map';
+import { map } from "rxjs/operators";
 
 import { Member } from "../member/member.service";
 
@@ -16,65 +16,63 @@ export class EventsService {
 
   constructor(
     @Inject("BASE_URL") private baseurl: string,
-    private http: AuthHttp,
+    private httpClient: HttpClient,
     private popupService: PopupService
   ) { }
 
   public getEvents(): Observable<Event[]> {
     return this.popupService.addWaitDialog(
-      this.http.get(this.baseurl + 'api/v1/events')
-        .map(response => response.json() as Event[])
+      this.httpClient.get<Event[]>("api/v1/events")
     );
   }
 
   public getEvent(id: number): Observable<Event> {
     return this.popupService.addWaitDialog(
-      this.http.get(this.baseurl + 'api/v1/events/' + id.toString())
-        .map(response => response.json() as Event)
+      this.httpClient.get<Event>("api/v1/events/" + id.toString())
     );
   }
 
   public createEvent(event: Event): Observable<boolean> {
     return this.popupService.addWaitDialog(
-      this.http.post(this.baseurl + 'api/v1/events', event)
-        .map(response => response.ok)
+      this.httpClient.post("api/v1/events", event)
+        .map(() => true)
     );
   }
 
   public editEvent(event: Event): Observable<boolean> {
     return this.popupService.addWaitDialog(
-      this.http.put(this.baseurl + 'api/v1/events/' + event.id.toString(), event)
-        .map(response => response.ok)
+      this.httpClient.put("/api/v1/events/" + event.id.toString(), event)
+        .map(() => true)
     );
   }
 
-  public createReport(id: number, report: Report) {
+  public createReport(id: number, report: Report): Observable<boolean> {
     return this.popupService.addWaitDialog(
-      this.http.post(this.baseurl + "api/v1/events/" + id + "/reports", report)
-        .map(response => response.ok)
+      this.httpClient.post("api/v1/events/" + id + "/reports", report)
+        .map(() => true)
     );
   }
 
   public deleteEvent(id: number): Observable<boolean> {
     return this.popupService.addWaitDialog(
-      this.http.delete(this.baseurl + 'api/v1/events/' + id.toString())
-        .map(response => response.ok)
+      this.httpClient.delete('/api/v1/events/' + id.toString())
+        .map(() => true)
     );
   }
 
   public deleteImage(id: any): Observable<boolean> {
     return this.popupService.addWaitDialog(
-      this.http.delete(this.baseurl + 'api/v1/images/' + id)
-        .map(response => response.ok)
+      this.httpClient.delete('/api/v1/images/' + id)
+        .map(() => true)
     );
   }
 
   public updateAttendance(id: number, attendance: Attendance) {
-    return this.http.post(this.baseurl + 'api/v1/events/' + id + '/attendance', attendance);
+    return this.httpClient.post('/api/v1/events/' + id + '/attendance', attendance);
   }
 
   public deleteAttendance(eventId: number, memberId: number) {
-    return this.http.delete(this.baseurl + 'api/v1/events/' + eventId + '/attendance/' + memberId);
+    return this.httpClient.delete('api/v1/events/' + eventId + '/attendance/' + memberId);
   }
 }
 

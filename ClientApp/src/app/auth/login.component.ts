@@ -54,7 +54,7 @@ export class LoginComponent {
     let redirect = this.baseurl + "facebook-auth.html";
     console.log(redirect);
     let clientId = "474257665919778";
-    this.authWindow = window.open(`https://www.facebook.com/v2.11/dialog/oauth?&response_type=token&display=popup&client_id=${clientId}&redirect_uri=${redirect}&scope=email`, null, 'width=600,height=400')
+    this.authWindow = window.open(`https://www.facebook.com/v3.2/dialog/oauth?&response_type=token&display=popup&client_id=${clientId}&redirect_uri=${redirect}&scope=email`, null, 'width=600,height=400')
   }
 
   handleMessage(event: Event) {

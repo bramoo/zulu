@@ -1,11 +1,14 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Configuration;
+using Microsoft.Extensions.Configuration;
 using zulu.Data;
+using Microsoft.Extensions.FileProviders;
 
 namespace zulu.Controllers
 {
@@ -13,25 +16,30 @@ namespace zulu.Controllers
   //[Authorize]
   public class ImageController : Controller
   {
-    private const string ImageDir = "images";
-
-    public ImageController(AppDbContext dbContext, IHostingEnvironment hostingEnvironment)
+    public ImageController(AppDbContext dbContext, IHostingEnvironment hostingEnvironment, IFileProvider fileProvider)
     {
       DbContext = dbContext ?? throw new ArgumentNullException(nameof(hostingEnvironment));
       HostingEnvironment = hostingEnvironment ?? throw new ArgumentNullException(nameof(hostingEnvironment));
+      FileProvider = fileProvider ?? throw new ArgumentNullException(nameof(fileProvider));
     }
 
 
     public AppDbContext DbContext { get; }
     private IHostingEnvironment HostingEnvironment { get; }
+    private IFileProvider FileProvider { get; }
 
 
     [HttpGet("{id:int}", Name = "GetImage")]
-    public async Task<FileResult> Get(int id)
+    public async Task<ActionResult> Get(int id)
     {
       var image = await DbContext.Images.Include(i => i.ContentType).FirstOrDefaultAsync(i => i.Id == id);
 
-      var path = Path.Combine(HostingEnvironment.WebRootPath, ImageDir);
+      if(image.FileName == null)
+      {
+        return NotFound();
+      }
+
+      var path = FileProvider.GetFileInfo("/").PhysicalPath;
       var filePath = Path.Combine(path, image.FileName);
 
       var fs = new FileStream(filePath, FileMode.Open);
@@ -48,7 +56,7 @@ namespace zulu.Controllers
 
       image.ContentType = await DbContext.ContentTypes.SingleAsync(ct => ct.Name == Request.ContentType);
 
-      var path = Path.Combine(HostingEnvironment.WebRootPath, ImageDir);
+      var path = FileProvider.GetFileInfo("/").PhysicalPath;
 
       if (!Directory.Exists(path))
       {

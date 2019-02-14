@@ -1,66 +1,60 @@
 import { Injectable } from "@angular/core";
-import { Headers, Http } from "@angular/http";
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { PopupService } from "../popup/popup.service";
+import { HttpClient } from "@angular/common/http";
 
 @Injectable()
 export class AuthService {
   public redirect: string;
 
   constructor(
-    private http: Http,
+    private httpClient: HttpClient,
     private popupService: PopupService
   ) { }
 
   get isLoggedIn(): boolean {
     let token = localStorage.getItem("token");
+    console.log(token);
     if (token) {
       return true;
-    }
-    else {
+    } else {
       return false;
     }
   }
 
   public login(email: string, password: string): Observable<boolean> {
-    let body = JSON.stringify({ email: email, password: password });
-    let headers = new Headers({ "Content-Type": "application/json" });
+    let body = { email: email, password: password };
 
     return this.popupService.addWaitDialog(
-      this.http.post("/api/v1/auth", body, { headers: headers })
-        .pipe(
-        map(response => {
-          let token = response.json() && response.json().token;
-          if (token) {
-            localStorage.setItem("token", token);
+      this.httpClient.post<{ token: string }>("/api/v1/auth", body)
+        .pipe(map(
+          res => {
+            localStorage.setItem("token", res.token);
             return true;
-          }
-          else {
-            return false;
-          }
-        })
-        )
-    , "Logging in ...");
+          },
+          () => false)),
+      "Logging in ..."
+    );
   }
 
   public fbLogin(token: string): Observable<boolean> {
-    let headers = new Headers({ "Content-Type": "application/json" });
+    let body = { token };
 
     return this.popupService.addWaitDialog(
-      this.http.post("/api/v1/fbauth", { token }, { headers: headers })
-        .pipe(
-        map(response => {
-          let token = response.json() && response.json().token;
-          if (token) {
-            localStorage.setItem("token", token);
-            return true;
-          }
-          else {
-            return false;
-          }
-        }))
-    , "Logging in ...");
+      this.httpClient.post<{ token: string }>("/api/v1/fbauth", body)
+        .pipe(map(res => {
+          console.log(res);
+          localStorage.setItem("token", res.token);
+          return true;
+          //}));
+          //res => {
+          //  localStorage.setItem("token", res.token);
+          //  return true;
+        },
+          () => false)),
+      "Logging in ..."
+    );
   }
 
   public logout() {

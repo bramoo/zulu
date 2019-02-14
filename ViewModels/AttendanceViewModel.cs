@@ -1,11 +1,11 @@
-using FluentValidation;
+﻿using FluentValidation;
 using System;
 
 namespace zulu.ViewModels
 {
   public abstract class AttendanceViewModel
   {
-    public bool Attended{get;set;}
+    public bool Attended { get; set; }
     public decimal? ServiceHours { get; set; }
   }
 
@@ -39,7 +39,6 @@ namespace zulu.ViewModels
     {
       RuleFor(a => a.Event).NotEmpty();
       RuleFor(a => a.Event.Id).NotEmpty();
-      RuleFor(a => a.Attended).NotEmpty();
       RuleFor(a => a.ServiceHours).GreaterThanOrEqualTo(0);
     }
   }

@@ -10,7 +10,7 @@ using zulu.ViewModels.Mapper;
 
 namespace zulu.Controllers
 {
-  [Route("api/v1/assignments/[controller`]")]
+  [Route("api/v1/assignments/[controller]")]
   public abstract class AssignmentControllerBase<TAssignment, TAssignmentMapper, TViewModel> : Controller
     where TAssignment : Assignment, new()
     where TViewModel : AssignmentViewModel<TAssignment>

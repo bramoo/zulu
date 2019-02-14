@@ -1,6 +1,6 @@
 ﻿namespace zulu.Models
 {
-	public class EventReport
+  public class EventReport
   {
     public int EventId { get; set; }
     public Event Event { get; set; }

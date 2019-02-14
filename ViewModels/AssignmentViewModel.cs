@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using FluentValidation;
@@ -19,7 +19,7 @@ namespace zulu.ViewModels
     public ISet<MemberViewModel> Followers { get; set; }
   }
 
-  public abstract class AssignmentViewModelValidator<TAssignment, TViewModel> : AbstractValidator<TViewModel> 
+  public abstract class AssignmentViewModelValidator<TAssignment, TViewModel> : AbstractValidator<TViewModel>
     where TAssignment : Assignment
     where TViewModel : AssignmentViewModel<TAssignment>
   {

@@ -1,16 +1,9 @@
-using System;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using zulu.Attributes;
 using zulu.Data;
-using zulu.Extensions;
-using zulu.Models;
 using zulu.Models.Assignments;
-using zulu.ViewModels;
 using zulu.ViewModels.Assignments;
-using zulu.ViewModels.Mapper;
 using zulu.ViewModels.Mapper.Assignments;
 
 namespace zulu.Controllers

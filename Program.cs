@@ -4,16 +4,17 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using zulu.Data;
+using Karambolo.Extensions.Logging;
 
 namespace zulu
 {
-	public class Program
+  public class Program
   {
     public static void Main(string[] args)
     {
-      var host = BuildWebHost(args);
+      var webhost = CreateWebHostBuilder(args).Build();
 
-      using (var scope = host.Services.CreateScope())
+      using (var scope = webhost.Services.CreateScope())
       {
         var services = scope.ServiceProvider;
 
@@ -29,12 +30,16 @@ namespace zulu
         }
       }
 
-      host.Run();
+      webhost.Run();
     }
 
-    public static IWebHost BuildWebHost(string[] args) =>
-        WebHost.CreateDefaultBuilder(args)
-            .UseStartup<Startup>()
-            .Build();
+    public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
+      WebHost.CreateDefaultBuilder(args)
+        .ConfigureLogging((context, builder) =>
+        {
+          builder.AddConfiguration(context.Configuration.GetSection("Logging"));
+          builder.AddFile(options => options.RootPath = "/data");
+        })
+        .UseStartup<Startup>();
   }
 }

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using zulu.Data;
@@ -7,7 +7,7 @@ using zulu.Models;
 namespace zulu.ViewModels.Mapper
 {
   public abstract class AssignmentMapper<TAssignment, TViewModel> :
-    IMapper<TAssignment, TViewModel> 
+    IMapper<TAssignment, TViewModel>
       where TAssignment : Assignment
       where TViewModel : AssignmentViewModel<TAssignment>
   {

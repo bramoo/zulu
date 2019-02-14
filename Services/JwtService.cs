@@ -7,7 +7,7 @@ using zulu.Extensions;
 
 namespace zulu.Services
 {
-	public static class JwtClaimIdentifiers
+  public static class JwtClaimIdentifiers
   {
     public const string Rol = "rol", Id = "id";
   }

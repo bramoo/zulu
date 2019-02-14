@@ -2,6 +2,7 @@ import { Injectable, ComponentFactoryResolver, ViewContainerRef, ComponentRef } 
 import { PopupComponent, PopupComponentConfig, PopupButton } from "./popup.component";
 
 import { Observable } from "rxjs/Observable";
+import { EmptyObservable } from 'rxjs/observable/EmptyObservable';
 import "rxjs/add/operator/delay";
 import "rxjs/add/operator/finally";
 import "rxjs/add/observable/empty";
@@ -32,7 +33,7 @@ export class PopupService {
   public addWaitDialog<T>(observable: Observable<T>, message = "Loading ..."): Observable<T> {
     let popupRef: ComponentRef<PopupComponent>;
 
-    let p = Observable.empty<T>()
+    let p = new EmptyObservable()
       .delay(500)
       .subscribe(null, null, () => popupRef = this.waitDialog(message));
 

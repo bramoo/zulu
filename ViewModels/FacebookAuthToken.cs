@@ -1,7 +1,7 @@
-namespace zulu.ViewModels
+﻿namespace zulu.ViewModels
 {
   public class FacebookAuthToken
   {
-    public string Token {get;set;}
+    public string Token { get; set; }
   }
 }
