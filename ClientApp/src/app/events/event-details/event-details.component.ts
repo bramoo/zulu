@@ -40,4 +40,8 @@ export class EventDetailsComponent implements OnInit {
   public imageUploaded() {
     this.ngOnInit();
   }
+
+  public imageUploadUrl(): string {
+    return "/api/v1/events/" + this.event.id + "/images"
+  }
 }

@@ -77,14 +77,21 @@ namespace zulu.Controllers
 
       DbContext.SaveChanges();
 
-      return Ok();
+      return Ok(image);
     }
 
     [HttpDelete("{id:int}")]
     [Authorize]
-    public Task<ActionResult> Delete(int id)
+    public async Task<ActionResult> Delete(int id)
     {
-      throw new NotImplementedException();
+      var image = await DbContext.Images.FirstOrDefaultAsync(i => i.Id == id);
+      if (image == null) return NotFound();
+
+      image.Delete();
+
+      DbContext.SaveChanges();
+
+      return NoContent();
     }
   }
 }

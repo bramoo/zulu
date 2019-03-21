@@ -8,7 +8,10 @@
 
 <div *ngIf="members" class="list-group">
   <div *ngFor="let member of members" class="list-group-item list-group-item-action">
-    <a [routerLink]="member.id">{{ member.firstName + " " + member.surname }}</a>
+    <a [routerLink]="member.id">
+      <img src="https://placezombie.com/64x64?{{member.firstName}}">
+      {{ member.firstName + " " + member.surname }}
+    </a>
     <button type="button" (click)="delete(member)" class="btn btn-danger btn-sm float-right">Delete</button>
   </div>
 </div>

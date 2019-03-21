@@ -21,6 +21,14 @@ namespace zulu.ViewModels
     public DateTime? Joined { get; set; }
     public DateTime? Invested { get; set; }
     public DateTime? Left { get; set; }
+
+    public ImageDescriptionViewModel Mugshot { get; set; }
+  }
+
+
+  public class FullMemberViewModel : MemberViewModel
+  {
+    public IEnumerable<ImageDescriptionViewModel> Mugshots { get; set; }
   }
 
 
@@ -39,6 +47,27 @@ namespace zulu.ViewModels
       RuleFor(m => m.Left)
         .GreaterThan(m => m.Joined).WithMessage("Can't leave before joining.")
         .GreaterThan(m => m.Invested).WithMessage("Can't leave before investiture.");
+    }
+  }
+
+
+  public class FullMemberViewModelValidator : AbstractValidator<FullMemberViewModel>
+  {
+    public FullMemberViewModelValidator(AppDbContext dbContext)
+    {
+      if (dbContext == null) throw new ArgumentNullException(nameof(dbContext));
+      RuleFor(m => m.FirstName).NotEmpty();
+      RuleFor(m => m.Surname).NotEmpty();
+      RuleFor(m => m.Email).EmailAddress()
+        .Must((model, email) => !dbContext.Members.Any(m => m.Email == email && m.Id != model.Id)).WithMessage(m => $"A member with email '{m.Email}' already exists.");
+      RuleFor(m => m.Joined).NotEmpty();
+      RuleFor(m => m.Invested)
+        .GreaterThanOrEqualTo(m => m.Joined).WithMessage("Can't be inversted before you joined.");
+      RuleFor(m => m.Left)
+        .GreaterThan(m => m.Joined).WithMessage("Can't leave before joining.")
+        .GreaterThan(m => m.Invested).WithMessage("Can't leave before investiture.");
+      
+      RuleForEach(m => m.Mugshots).SetValidator(new ImageDescriptionViewModelValidator());
     }
   }
 }

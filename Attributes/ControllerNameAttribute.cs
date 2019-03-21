@@ -1,6 +1,6 @@
 using System;
 
-namespace zulu.Extensions
+namespace zulu.Attributes
 {
   public class ControllerNameAttribute : Attribute
   {

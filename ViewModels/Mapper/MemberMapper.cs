@@ -1,18 +1,24 @@
 using System;
 using System.Linq;
 using zulu.Data;
+using zulu.Models;
 using zulu.ViewModels;
 
 namespace zulu.ViewModels.Mapper
 {
-  public class MemberMapper : IMapper<Models.Member, MemberViewModel>
+  public class MemberMapper :
+      IMapper<Models.Member, MemberViewModel>,
+      IMapper<Models.Member, FullMemberViewModel>
   {
-    public MemberMapper(AppDbContext dbContext)
+    public MemberMapper(AppDbContext dbContext, ImageDescriptionMapper imageMapper)
     {
       DbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+      ImageMapper = imageMapper ?? throw new ArgumentNullException(nameof(imageMapper));
     }
 
     private AppDbContext DbContext { get; }
+
+    private ImageDescriptionMapper ImageMapper { get; }
 
     public MemberViewModel Map(Models.Member src)
     {
@@ -35,6 +41,36 @@ namespace zulu.ViewModels.Mapper
         Joined = src.Joined,
         Invested = src.Invested,
         Left = src.Left,
+
+        Mugshot = ImageMapper.Map(src.Mugshot)
+      };
+    }
+
+    public FullMemberViewModel MapFull(Member src)
+    {
+      return new FullMemberViewModel
+      {
+        Id = src.Id,
+        State = src.State.ToString(),
+        Created = src.Created,
+        LastModified = src.Modified,
+
+        FirstName = src.FirstName,
+        Surname = src.Surname,
+        Alias = src.Alias,
+        Email = src.Email,
+        DateOfBirth = src.DateOfBirth,
+
+        Position = src.Position?.Name,
+        Rank = src.Rank?.Rank,
+
+        Joined = src.Joined,
+        Invested = src.Invested,
+        Left = src.Left,
+
+        Mugshot = ImageMapper.Map(src.Mugshot),
+
+        Mugshots = src.Mugshots.Select(i => ImageMapper.Map(i))
       };
     }
 
@@ -53,9 +89,20 @@ namespace zulu.ViewModels.Mapper
       dest.Invested = src.Invested;
       dest.Left = src.Left;
 
+      ImageMapper.Update(dest.Mugshot, src.Mugshot);
+
       return dest;
     }
 
+    FullMemberViewModel IMapper<Member, FullMemberViewModel>.Map(Member src) => MapFull(src);
+
+    public Member Update(Member dest, FullMemberViewModel src){
+      Update(dest, (MemberViewModel)src);
+
+			Mapper.Merge(dest.Mugshots, src.Mugshots, ImageMapper);
+
+			return dest;
+    }
 
     public Models.MemberPosition ResolvePosition(MemberViewModel source)
     {

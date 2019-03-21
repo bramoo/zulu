@@ -237,5 +237,10 @@ _Pvt_Extensions
 
 # SQLite DB files
 *.db
+
+#images
 /wwwroot/images
+
+#npm
 ClientApp/package-lock.json
+node_modules

@@ -1,6 +1,7 @@
 import { Component, Inject, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 import { PopupService } from '../popup/popup.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'image-upload',
@@ -8,8 +9,15 @@ import { PopupService } from '../popup/popup.service';
   styleUrls: ['./image-upload.component.css']
 })
 
+export class Image {
+  id: number;
+  displayName: string;
+  contentType: string;
+  description: string;
+}
+
 export class ImageUploadComponent implements OnInit {
-  @Input() public eventid: string;
+  @Input() public uploadUrl: string;
   @Output() public uploaded = new EventEmitter<string>();
   public file: File;
 
@@ -39,17 +47,16 @@ export class ImageUploadComponent implements OnInit {
     if (this.file) {
       let body = {
         displayName: this.file.name,
-        contentType: this.file.type,
-        description: "an image"
+        contentType: this.file.type
       };
 
       this.popupService.addWaitDialog(
-        this.httpClient.post<{ id: string }>("/api/v1/events/" + this.eventid + "/images", body)
-      ).subscribe(data => this.getData(this.file, data.id));
+        this.httpClient.post<Image>(this.uploadUrl, body)
+      ).subscribe((data: Image) => this.getData(this.file, data.id));
     }
   }
 
-  getData(file: File, id: string) {
+  getData(file: File, id: number) {
     if (file) {
       let reader = new FileReader();
       reader.readAsArrayBuffer(file);
@@ -57,7 +64,7 @@ export class ImageUploadComponent implements OnInit {
     }
   }
 
-  putData(id: string, data: any, type: string) {
+  putData(id: number, data: any, type: string) {
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': type
@@ -66,6 +73,6 @@ export class ImageUploadComponent implements OnInit {
 
     this.popupService.addWaitDialog(
       this.httpClient.put(this.baseUrl + "api/v1/images/" + id, data, httpOptions)
-    ).subscribe(() => this.uploaded.emit(id));
+    ).subscribe(() => this.uploaded.emit('' + id));
   }
 }

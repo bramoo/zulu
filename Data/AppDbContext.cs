@@ -42,6 +42,9 @@ namespace zulu.Data
       modelBuilder.Entity<Member>().HasIndex(m => m.Email).IsUnique();
       modelBuilder.Entity<Member>().HasIndex(m => new { m.Alias, m.Surname, m.FirstName });
 
+      modelBuilder.Entity<MemberImage>().HasKey(mi => new { mi.MemberId, mi.ImageId });
+      modelBuilder.Entity<MemberImage>().HasOne(mi => mi.Member).WithMany(m => m.MemberImages);
+
       //data objects
       modelBuilder.Entity<ContentType>().HasIndex(ct => ct.Name).IsUnique();
       modelBuilder.Entity<MemberPosition>().HasIndex(mp => mp.Name).IsUnique();

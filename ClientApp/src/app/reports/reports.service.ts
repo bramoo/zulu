@@ -1,6 +1,5 @@
 import { Inject, Injectable } from '@angular/core';
-import { Response } from '@angular/http';
-import { AuthHttp } from "angular2-jwt";
+import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
@@ -11,42 +10,40 @@ export class ReportsService {
 
   constructor(
     @Inject("BASE_URL") private baseurl: string,
-    private http: AuthHttp,
+    private httpClient: HttpClient,
     private popupService: PopupService
   ) { }
 
   public getReports(): Observable<Report[]> {
     return this.popupService.addWaitDialog(
-      this.http.get(this.baseurl + 'api/v1/reports')
-        .map(response => response.json() as Report[])
+      this.httpClient.get<Report[]>(this.baseurl + 'api/v1/reports')
     );
   }
 
   public getReport(id: number): Observable<Report> {
     return this.popupService.addWaitDialog(
-      this.http.get(this.baseurl + 'api/v1/reports/' + id.toString())
-        .map(response => response.json() as Report)
+      this.httpClient.get<Report>(this.baseurl + 'api/v1/reports/' + id.toString())
     );
   }
 
   public createReport(report: Report): Observable<boolean> {
     return this.popupService.addWaitDialog(
-      this.http.post(this.baseurl + 'api/v1/reports', report)
-        .map(response => response.ok)
+      this.httpClient.post(this.baseurl + 'api/v1/reports', report)
+      .map(res => true, () => false)
     );
   }
 
   public editReport(report: Report): Observable<boolean> {
     return this.popupService.addWaitDialog(
-      this.http.put(this.baseurl + 'api/v1/reports/' + report.id.toString(), report)
-        .map(response => response.ok)
+      this.httpClient.put(this.baseurl + 'api/v1/reports/' + report.id.toString(), report)
+      .map(res => true, () => false)
     );
   }
 
   public deleteReport(id: number): Observable<boolean> {
     return this.popupService.addWaitDialog(
-      this.http.delete(this.baseurl + 'api/v1/reports/' + id.toString())
-        .map(response => response.ok)
+      this.httpClient.delete(this.baseurl + 'api/v1/reports/' + id.toString())
+      .map(res => true, () => false)
     );
   }
 }

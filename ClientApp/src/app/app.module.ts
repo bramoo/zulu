@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule, ErrorHandler } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
 
 // external
@@ -26,6 +26,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 // util
 import { PopupErrorHandler } from './error-handler/error-handler';
+import { AuthInterceptor } from './auth/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,10 @@ import { PopupErrorHandler } from './error-handler/error-handler';
     ReportsModule,
     AppRoutingModule
   ],
-  providers: [{provide: ErrorHandler, useClass: PopupErrorHandler}],
+  providers: [
+    { provide: ErrorHandler, useClass: PopupErrorHandler },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

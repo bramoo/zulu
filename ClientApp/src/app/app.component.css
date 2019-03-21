@@ -1,6 +1,26 @@
-@media (max-width: 767px) {
+/* @media (max-width: 767px) { */
   /* On small screens, the nav menu spans the full width of the screen. Leave a space for it. */
-  .body-content {
+  /*.body-content {
     padding-top: 50px;
+  }
+} */
+
+body {
+  font-size: .875rem;
+}
+
+.feather {
+  width: 16px;
+  height: 16px;
+  vertical-align: text-bottom;
+}
+
+[role="main"] {
+  padding-top: 133px; /* Space for fixed navbar */
+}
+
+@media (min-width: 768px) {
+  [role="main"] {
+    padding-top: 48px; /* Space for fixed navbar */
   }
 }

@@ -1,39 +1,85 @@
 <h1>Create New Member</h1>
 
+<div class="row">
+  <div class="col-12 col-sm-auto mb-3">
+    <div class="mx-auto">
+      <img src="https://imgplaceholder.com/140x140">
+    </div>
+  </div>
+  <div class="col d-flex flex-column flex-sm-ros justify-content-between mb-3">
+    <div class="text-centre text-sm-left mb-sm-0">
+      <h4 class="pt-sm-2 pb-1 mb-0 text-nowrap">{{ member.firstName || '' }} {{ member.surname || '' }}</h4>
+      <div class="mt-2">
+        <button class="btn btn-primary" type="button">
+          <i class="fas fa-camera fa-fw"></i>
+          <span>Change Photo</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <form (submit)="submit()">
-  <div class="form-group">
-    <label for="firstName">First Name</label>
-    <input id="firstName" name="firstName" [(ngModel)]="member.firstName" class="form-control" />
-  </div>
+  <div class="row">
+    <div class="col">
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input id="firstName" name="firstName" [(ngModel)]="member.firstName" class="form-control" />
+          </div>
+        </div>
 
-  <div class="form-group">
-    <label for="surname">Surname</label>
-    <input id="surname" name="surname" [(ngModel)]="member.surname" class="form-control" />
-  </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="surname">Surname</label>
+            <input id="surname" name="surname" [(ngModel)]="member.surname" class="form-control" />
+          </div>
+        </div>
+      </div>
 
-  <div class="form-group">
-    <label for="alias">Alias</label>
-    <input id="alias" name="alias" [(ngModel)]="member.alias" class="form-control" />
-  </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="alias">Alias</label>
+            <input id="alias" name="alias" [(ngModel)]="member.alias" class="form-control" />
+          </div>
+        </div>
+      </div>
 
-  <div class="form-group">
-    <label for="email">Email</label>
-    <input id="email" name="email" [(ngModel)]="member.email" type="email" class="form-control" />
-  </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input id="email" name="email" [(ngModel)]="member.email" type="email" class="form-control" />
+          </div>
+        </div>
+      </div>
 
-  <div class="form-group">
-    <label for="joined">Joined</label>
-    <input id="joined" name="joined" [(ngModel)]="member.joined" type="date" class="form-control" />
-  </div>
+      <div class="row">
+        <div class="col">
+          <div class="form-group">
+            <label for="joined">Joined</label>
+            <input id="joined" name="joined" [(ngModel)]="member.joined" type="date" class="form-control" />
+          </div>
+        </div>
 
-  <div class="form-group">
-    <label for="invested">Invested</label>
-    <input id="invested" name="invested" [(ngModel)]="member.invested" type="date" class="form-control" />
-  </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="invested">Invested</label>
+            <input id="invested" name="invested" [(ngModel)]="member.invested" type="date" class="form-control" />
+          </div>
+        </div>
 
-  <div class="form-group">
-    <label for="left">Left</label>
-    <input id="left" name="left" [(ngModel)]="member.left" type="date" class="form-control" />
+        <div class="col">
+          <div class="form-group">
+            <label for="left">Left</label>
+            <input id="left" name="left" [(ngModel)]="member.left" type="date" class="form-control" />
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
   <button type="submit" class="btn btn-primary">Create</button>
